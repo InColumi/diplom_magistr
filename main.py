@@ -5,6 +5,7 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
+
 @app.get("/")
 def read_root():
     return Excecutor.raw_excecute("""select now()::date;""")
