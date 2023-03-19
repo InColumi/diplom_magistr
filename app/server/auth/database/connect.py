@@ -21,17 +21,17 @@ class Excecutor:
         except Exception as e:
             output['status'] = 1
             output["message"] = str(e)
-           
+
         finally:
             if cursor:
                 cursor.close()
             if connection:
                 connection.close()
         return output
-    
+
     @staticmethod
     def get_connect():
         try:
-            return psycopg2.connect(**Config.database) 
+            return psycopg2.connect(**Config.database)
         except psycopg2.Error as e:
             raise Exception(f'Database connection error... Details: {e.pgerror}')
