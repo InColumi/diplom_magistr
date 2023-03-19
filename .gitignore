@@ -133,3 +133,6 @@ dmypy.json
 
 # CI\CD
 .github/
+
+# Config files
+config.py

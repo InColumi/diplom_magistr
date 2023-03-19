@@ -1,4 +1,5 @@
 from typing import Union
+from app.server.auth.database.connect import Excecutor
 
 from fastapi import FastAPI
 
@@ -7,7 +8,7 @@ app = FastAPI()
 
 @app.get("/")
 def read_root():
-    return {"Hello": "World"}
+    return Excecutor.raw_excecute("""select now()::date;""")
 
 
 @app.get("/items/{item_id}")
