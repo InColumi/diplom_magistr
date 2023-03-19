@@ -6,6 +6,7 @@ class Excecutor:
     @staticmethod
     def raw_excecute(sql_str: str):
         connection = None
+        cursor = None
         output = {}
         output['status'] = 0
 
@@ -22,8 +23,9 @@ class Excecutor:
             output["message"] = str(e)
            
         finally:
-            if connection is not None:
+            if cursor:
                 cursor.close()
+            if connection:
                 connection.close()
         return output
     
