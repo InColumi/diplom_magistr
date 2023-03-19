@@ -11,3 +11,6 @@ extend-select =
     F401,
 # dictionary key name repeated with different values
     F601
+extend-ignore =
+# line too long (81 > 79 characters)
+    E501 
