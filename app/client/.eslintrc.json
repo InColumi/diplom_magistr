@@ -35,9 +35,10 @@
                 "tsx": "never"
             }
         ],
+        "@typescript-eslint/no-explicit-any": "off",
         "comma-dangle": "off",
-        "@typescript-eslint/comma-dangle": ["error", "only-multiline"],
-        "quotes": ["error", "single", { "allowTemplateLiterals": true }]
+        "@typescript-eslint/comma-dangle": ["error", "only-multiline"]
+        // "quotes": ["error", "single", { "allowTemplateLiterals": true }]
     },
     "settings": {
         "import/resolver": {
