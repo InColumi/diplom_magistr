@@ -136,3 +136,9 @@ dmypy.json
 
 # Config files
 config.py
+
+# Any Cache
+cache/*
+*.db
+texts/*
+*.bz2
