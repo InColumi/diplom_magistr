@@ -136,6 +136,7 @@ dmypy.json
 
 # Config files
 config.py
+*.ini
 
 # Any Cache
 cache/*
