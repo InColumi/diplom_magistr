@@ -143,3 +143,7 @@ cache/*
 *.db
 texts/*
 *.bz2
+
+# Any archives
+*.rar
+*.zip
