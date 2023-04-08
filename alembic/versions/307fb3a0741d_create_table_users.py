@@ -33,7 +33,6 @@ def upgrade() -> None:
     ,   condition= 'username is not null or email is not null')
 
     
-
 def downgrade() -> None:
     op.drop_table('users')
     pass
