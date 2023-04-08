@@ -1,14 +1,11 @@
-from typing import Optional
-from sqlalchemy import ForeignKey
-from sqlalchemy import Boolean, Text, Uuid, Column
+from sqlalchemy import Boolean, Text, Column
 from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy.orm import Mapped
-from sqlalchemy.orm import mapped_column
-
 import uuid
+
 
 class Base(DeclarativeBase):
     pass
+
 
 class User(Base):
     __tablename__ = "users"

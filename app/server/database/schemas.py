@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from typing import Union
 from uuid import UUID
 
+
 class User(BaseModel):
     id: UUID
     email: Union[str, None] = None
@@ -10,6 +11,7 @@ class User(BaseModel):
 
     class Config:
         orm_mode = True
+
 
 class UserCreate(BaseModel):
     email: Union[str, None] = None

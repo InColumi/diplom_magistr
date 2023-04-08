@@ -1,12 +1,11 @@
-from typing import Union
-
 from app.server.database import crud_user, models, schemas
 from app.server.database.database import SessionLocal, engine
 from sqlalchemy.orm import Session
+from fastapi import Depends, FastAPI, HTTPException, Response, Request
+
 
 models.Base.metadata.create_all(bind=engine)
 
-from fastapi import Depends, FastAPI, HTTPException, Response, Request
 
 app = FastAPI()
 
@@ -21,9 +20,11 @@ async def db_session_middleware(request: Request, call_next):
         request.state.db.close()
     return response
 
+
 # Dependency
 def get_db(request: Request):
     return request.state.db
+
 
 @app.post("/create_user/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
@@ -43,29 +44,3 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
             return db_user
     else:
         raise HTTPException(status_code=400, detail="Expected email or username.")
-
-    
-        
-    
-
-# @app.get("/")
-# def read_root():
-#     # info = dict({"email": "max77648@gmail.com", "password": "1234"})
-#     # return Excecutor.excecute_with_check(sql_str="select public.authotization(%s);", input_json=info)
-#     test = {
-#         "access_token": 'maxim',
-#         "refresh_token": 'panov',
-#         "expiration_time": 123456}
-#     print(test)
-#     return test
-
-
-
-# @app.get('/sign_in')
-# def sign_in():
-#     pass
-
-# @app.get('/sign_up')
-# def sign_up():
-#     pass
-
