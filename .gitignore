@@ -142,6 +142,7 @@ config.py
 cache/*
 *.db
 texts/*
+clear_texts/*
 *.bz2
 
 # Any archives
