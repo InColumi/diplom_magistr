@@ -1,12 +1,12 @@
 """Create table users
 
-Revision ID: 933c2eea50fb
+Revision ID: 307fb3a0741d
 Revises: 
-Create Date: 2023-04-01 19:00:49.109198
+Create Date: 2023-04-08 16:50:51.577803
 
 """
 from alembic import op
-from sqlalchemy import Column, Uuid, Text, Boolean, column, func
+from sqlalchemy import Column, Uuid, Text, Boolean
 import uuid
 
 
@@ -22,7 +22,7 @@ def upgrade() -> None:
     ,   Column(name='id', type_=Uuid, primary_key=True, default=uuid.uuid4())
     ,   Column(name='email', type_=Text, unique=True, )
     ,   Column(name='username', type_=Text, unique=True)
-    ,   Column(name='password', type_=Text, nullable=False)
+    ,   Column(name='hashed_password', type_=Text, nullable=False)
     ,   Column(name='salt', type_=Text, nullable=False)
     ,   Column(name='is_deleted', type_=Boolean, nullable=False, default=False)
     )
@@ -30,7 +30,9 @@ def upgrade() -> None:
     op.create_check_constraint(
         constraint_name='check_not_null_username_and_email'
     ,   table_name='users'
-    ,   condition= 'username is not null and email is not null')
+    ,   condition= 'username is not null or email is not null')
+
+    
 
 def downgrade() -> None:
     op.drop_table('users')
