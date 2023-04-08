@@ -144,6 +144,8 @@ cache/*
 texts/*
 clear_texts/*
 *.bz2
+*.png
+magic_with_texts/*
 
 # Any archives
 *.rar
