@@ -44,7 +44,6 @@ class Excecutor:
         except psycopg2.Error as e:
             raise Exception(f'Database connection error... Details: {e.pgerror}')
 
-    
     def check_output(output):
         """Check response from Database."""
         if output is None:
