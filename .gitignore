@@ -136,3 +136,17 @@ dmypy.json
 
 # Config files
 config.py
+*.ini
+
+# Any Cache
+cache/*
+*.db
+texts/*
+clear_texts/*
+*.bz2
+*.png
+magic_with_texts/*
+
+# Any archives
+*.rar
+*.zip
