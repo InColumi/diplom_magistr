@@ -1,19 +1,25 @@
 import React, { ReactElement } from 'react'
 import { connect } from 'react-redux'
+import { Route, Routes } from 'react-router-dom'
 import { testA } from './store/test/actions'
-import { isFetchingS, testListS } from './store/test/selectors'
-import AuthContainer from './containers/Auth/AuthContainer'
+import { isFetchingS } from './store/test/selectors'
+import AuthContainer from './containers/Auth'
+import MainContainer from './containers/Main'
+import NotFound from './components/NotFound'
+import { isAuthS } from './helpers/Auth/selectors'
 
 type AppProps = {
-    isFetching: boolean
-    testList: any
-    test: () => void
+    isAuth: boolean
 }
 
-const App = ({ isFetching, testList, test }: AppProps): ReactElement => {
+const App = ({ isAuth }: AppProps): ReactElement => {
     return (
         <div>
-            <AuthContainer />
+            <Routes>
+                <Route path="/" element={<MainContainer />} />
+                <Route path="/login" element={<AuthContainer />} />
+                <Route path="*" element={<NotFound />} />
+            </Routes>
         </div>
     )
 }
@@ -21,7 +27,7 @@ const App = ({ isFetching, testList, test }: AppProps): ReactElement => {
 export default connect(
     (state: RootStateInterface) => ({
         isFetching: isFetchingS(state),
-        testList: testListS(state),
+        isAuth: isAuthS(state),
     }),
     {
         test: testA.request,
