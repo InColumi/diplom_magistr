@@ -1,21 +1,18 @@
-from dependencies import pwd_context, get_db, oauth2_scheme
+from dependencies import pwd_context, get_db
 from datetime import datetime, timedelta
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 from sqlalchemy.orm import Session
 from crud import crud_users
-from typing import Annotated, Union
-from schemas.user import UserCreate, UserOut
+from typing import Annotated
+from schemas.user import UserCreate
 from schemas.token import Token
 from config import Config
 from fastapi.encoders import jsonable_encoder
 
 router = APIRouter(tags=["auth"])
 
-# @lru_cache()
-# def get_settings():
-#     return Settings()
 
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
@@ -28,7 +25,7 @@ def authenticate_user(db: Session, user_id: str, password: str):
     if not verify_password(password, user.hashed_password):
         return False
     return user
-    
+
 
 def create_token(data: dict) -> Token:
     data_copy = data.copy()
@@ -59,14 +56,13 @@ def refresh(token: str):
         raise credentials_exception
 
 
-
 @router.post('/sing_in')
 def sing_in(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: Session = Depends(get_db)):
     db_user = crud_users.get_user_by_username(db, form_data.username)
     if not db_user:
-        raise HTTPException(status_code=400, detail=f"Incorrect username or password")
-    if not verify_password(form_data.password, db_user.hashed_password):\
-        raise HTTPException(status_code=400, detail=f"Incorrect username or password")
+        raise HTTPException(status_code=400, detail="Incorrect username or password")
+    if not verify_password(form_data.password, db_user.hashed_password):
+        raise HTTPException(status_code=400, detail="Incorrect username or password")
     try:
         data = {'user_id': jsonable_encoder(db_user.id)}
         token = create_token(data)
@@ -88,22 +84,3 @@ def sign_up(user: UserCreate, db: Session = Depends(get_db)):
     db_user = crud_users.create_user(db, user)
     if db_user:
         raise HTTPException(status_code=201, detail="Sucess.")
-
-
-# @router.post('/user/me', response_model=UserOut, status_code=200)
-# def read_user_me(token: Annotated[str, Depends(oauth2_scheme)], db: Session = Depends(get_db)):
-#     credentials_exception = HTTPException(
-#         status_code=401,
-#         detail="Could not validate credentials",
-#         headers={"WWW-Authenticate": "Bearer"},
-#     )
-#     try:
-#         payload = jwt.decode(token, SECRET_KEY)
-#     except JWTError:
-#         raise credentials_exception
-#     user_id = payload.get('id')
-#     if not user_id:
-#         raise credentials_exception
-#     user = crud_users.get_user_by_id(db, user_id)
-#     print('user', user)
-#     return UserOut(**user)

@@ -15,6 +15,7 @@ app.add_middleware(
 
 app.include_router(auth.router)
 
+
 @app.get("/")
 async def root():
     return {"expiration_time": 30, "access_token": "maxim", "refresh_token": "panov"}
