@@ -1,14 +1,13 @@
-from dependencies import pwd_context, get_db
+from dependencies import pwd_context, get_db, credentials_exception, settings
 from datetime import datetime, timedelta
-from fastapi import APIRouter, Depends, HTTPException
-from fastapi.security import OAuth2PasswordRequestForm
+from fastapi import APIRouter, Depends, HTTPException, Header
+from fastapi.security import OAuth2PasswordRequestForm, HTTPAuthorizationCredentials, HTTPBearer
 from jose import JWTError, jwt
 from sqlalchemy.orm import Session
 from crud import crud_users
 from typing import Annotated
 from schemas.user import UserCreate
 from schemas.token import Token
-from config import Config
 from fastapi.encoders import jsonable_encoder
 
 router = APIRouter(tags=["auth"])
@@ -29,28 +28,33 @@ def authenticate_user(db: Session, user_id: str, password: str):
 
 def create_token(data: dict) -> Token:
     data_copy = data.copy()
-    expiration_time = datetime.utcnow() + timedelta(Config.ACCESS_TOKEN_EXPIRE_MINUTES)
+    expiration_time = datetime.utcnow() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     data_copy['exp'] = expiration_time
-    access_token = jwt.encode(claims=data_copy, key=Config.ACCESS_TOKEN_SECRET_KEY)
+    access_token = jwt.encode(claims=data_copy, key=settings.ACCESS_TOKEN_SECRET_KEY)
 
-    expiration_time = datetime.utcnow() + timedelta(Config.REFRESH_TOKEN_EXPIRE_DAYS)
+    expiration_time = datetime.utcnow() + timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS)
     data_copy['exp'] = expiration_time
-    refresh_token = jwt.encode(claims=data_copy, key=Config.REFRESH_TOKEN_SECRET_KEY)
-    return Token(access_token=access_token, refresh_token=refresh_token, expiration_time=Config.ACCESS_TOKEN_EXPIRE_MINUTES * 1000)
+    refresh_token = jwt.encode(claims=data_copy, key=settings.REFRESH_TOKEN_SECRET_KEY)
+    return Token(access_token=access_token, refresh_token=refresh_token, expiration_time=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 1000)
 
 
-@router.post('/refresh_token', status_code=200)
-def refresh(token: str):
-    credentials_exception = HTTPException(
-        status_code=401,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
+def has_access(credentials: HTTPAuthorizationCredentials = Depends(HTTPBearer())):
+    token = credentials.credentials
+    if not token:
+        raise credentials_exception
     try:
-        data = jwt.decode(token, Config.REFRESH_TOKEN_SECRET_KEY)
-        expiration_time = datetime.utcnow() + timedelta(Config.ACCESS_TOKEN_EXPIRE_MINUTES)
+        jwt.decode(token, settings.ACCESS_TOKEN_SECRET_KEY, options={'require_exp': True})
+    except JWTError as e:
+        raise HTTPException(status_code=401, detail=str(e))
+
+
+@router.post('/refresh_token', dependencies=[Depends(has_access)], status_code=200)
+def refresh(token: str = Header(None)):
+    try:
+        data = jwt.decode(token, settings.REFRESH_TOKEN_SECRET_KEY)
+        expiration_time = datetime.utcnow() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
         data['exp'] = expiration_time
-        access_token = jwt.encode(claims=data, key=Config.ACCESS_TOKEN_SECRET_KEY)
+        access_token = jwt.encode(claims=data, key=settings.ACCESS_TOKEN_SECRET_KEY)
         return {'accecc_token': access_token}
     except JWTError:
         raise credentials_exception
