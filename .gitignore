@@ -141,12 +141,16 @@ config.py
 # Any Cache
 cache/*
 *.db
-texts/*
-clear_texts/*
 *.bz2
 *.png
-magic_with_texts/*
 
 # Any archives
 *.rar
 *.zip
+
+# File for test
+texts/*
+clear_texts/*
+magic_with_texts/*
+main_old.py
+1.py
