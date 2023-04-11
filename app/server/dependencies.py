@@ -1,9 +1,11 @@
 from passlib.context import CryptContext
-from fastapi import HTTPException
+from fastapi import HTTPException, Depends
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from config import Settings
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from jose import JWTError, jwt
 
 settings = Settings()
 
@@ -21,6 +23,16 @@ credentials_exception = HTTPException(
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
+
+
+def has_access(credentials: HTTPAuthorizationCredentials = Depends(HTTPBearer())):
+    token = credentials.credentials
+    if not token:
+        raise credentials_exception
+    try:
+      return jwt.decode(token, settings.ACCESS_TOKEN_SECRET_KEY, options={'require_exp': True})
+    except JWTError as e:
+        raise HTTPException(status_code=401, detail=str(e))
 
 
 def get_db():
