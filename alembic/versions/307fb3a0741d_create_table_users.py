@@ -23,7 +23,6 @@ def upgrade() -> None:
                     Column(name='email', type_=Text, unique=True, ),
                     Column(name='username', type_=Text, unique=True),
                     Column(name='hashed_password', type_=Text, nullable=False),
-                    Column(name='salt', type_=Text, nullable=False),
                     Column(name='is_deleted', type_=Boolean, nullable=False, default=False))
 
     op.create_check_constraint(constraint_name='check_not_null_username_and_email', table_name='users', condition='username is not null or email is not null')
