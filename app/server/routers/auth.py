@@ -15,6 +15,7 @@ router = APIRouter(tags=["auth"])
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
+
 def authenticate_user(db: Session, user_id: str, password: str):
     user = crud_users.get_user_by_id(db=db, user_id=user_id)
     if not user:
@@ -23,9 +24,11 @@ def authenticate_user(db: Session, user_id: str, password: str):
         return False
     return user
 
+
 def create_access_token(data: dict) -> str:
     data['exp'] = datetime.utcnow() + timedelta(seconds=settings.ACCESS_TOKEN_EXPIRES)
     return jwt.encode(claims=data, key=settings.ACCESS_TOKEN_KEY)
+
 
 def create_token(data: dict) -> Token:
     access_token = create_access_token(data)
@@ -50,7 +53,7 @@ async def get_active_current_user(user: Annotated[UserOut, Depends(get_current_u
 @router.get('/user/me', dependencies=[Depends(has_access)])
 def get_user_me(user: Annotated[UserOut, Depends(get_active_current_user)]):
     return user
-    
+
 
 @router.post('/refresh_token')
 async def refresh(token: TokenRefresh):

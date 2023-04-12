@@ -24,12 +24,13 @@ credentials_exception = HTTPException(
         headers={"WWW-Authenticate": "Bearer"},
     )
 
+
 def has_access(credentials: HTTPAuthorizationCredentials = Depends(HTTPBearer())):
     token = credentials.credentials
     if not token:
         raise credentials_exception
     try:
-      return jwt.decode(token, settings.ACCESS_TOKEN_KEY, options={'require_exp': True})
+        return jwt.decode(token, settings.ACCESS_TOKEN_KEY, options={'require_exp': True})
     except JWTError as e:
         raise HTTPException(status_code=401, detail=str(e))
 
