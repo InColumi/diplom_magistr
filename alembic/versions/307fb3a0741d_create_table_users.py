@@ -20,8 +20,8 @@ depends_on = None
 def upgrade() -> None:
     op.create_table('users',
                     Column(name='id', type_=Uuid, primary_key=True, default=uuid.uuid4()),
-                    Column(name='email', type_=Text, unique=True, ),
-                    Column(name='username', type_=Text, unique=True),
+                    Column(name='email', type_=Text, unique=True, nullable=False),
+                    Column(name='username', type_=Text, unique=True, nullable=False),
                     Column(name='hashed_password', type_=Text, nullable=False),
                     Column(name='is_deleted', type_=Boolean, nullable=False, default=False))
 

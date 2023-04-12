@@ -11,8 +11,8 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(Text, primary_key=True, index=True, default=uuid.uuid4)
-    email = Column(Text, unique=True)
-    username = Column(Text, unique=True)
+    email = Column(Text, unique=True, nullable=False)
+    username = Column(Text, unique=True, nullable=False)
     hashed_password = Column(Text, nullable=False)
     is_deleted = Column(Boolean, default=False)
 
