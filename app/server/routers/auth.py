@@ -1,23 +1,21 @@
 from dependencies import pwd_context, get_db, credentials_exception, settings, has_access
 from datetime import datetime, timedelta
-from fastapi import APIRouter, Depends, HTTPException, Header
-from fastapi.security import OAuth2PasswordRequestForm
+from fastapi import APIRouter, Depends, HTTPException
 from jose import JWTError, jwt
 from sqlalchemy.orm import Session
 from crud import crud_users
 from typing import Annotated
-from schemas.user import UserCreate, UserOut
-from schemas.token import Token
+from schemas.user import UserCreate, UserOut, UserLogin
+from schemas.token import Token, TokenRefresh
 from fastapi.encoders import jsonable_encoder
 
 router = APIRouter(tags=["auth"])
 
 
-async def verify_password(plain_password, hashed_password):
+def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
-
-async def authenticate_user(db: Session, user_id: str, password: str):
+def authenticate_user(db: Session, user_id: str, password: str):
     user = crud_users.get_user_by_id(db=db, user_id=user_id)
     if not user:
         return False
@@ -25,17 +23,16 @@ async def authenticate_user(db: Session, user_id: str, password: str):
         return False
     return user
 
+def create_access_token(data: dict) -> str:
+    data['exp'] = datetime.utcnow() + timedelta(seconds=settings.ACCESS_TOKEN_EXPIRES)
+    return jwt.encode(claims=data, key=settings.ACCESS_TOKEN_KEY)
 
-async def create_token(data: dict) -> Token:
-    data_copy = data.copy()
-    expiration_time = datetime.utcnow() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
-    data_copy['exp'] = expiration_time
-    access_token = jwt.encode(claims=data_copy, key=settings.ACCESS_TOKEN_SECRET_KEY)
+def create_token(data: dict) -> Token:
+    access_token = create_access_token(data)
 
-    expiration_time = datetime.utcnow() + timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS)
-    data_copy['exp'] = expiration_time
-    refresh_token = jwt.encode(claims=data_copy, key=settings.REFRESH_TOKEN_SECRET_KEY)
-    return Token(access_token=access_token, refresh_token=refresh_token, expiration_time=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 1000)
+    data['exp'] = datetime.utcnow() + timedelta(minutes=settings.REFERSH_TOKEN_EXPIRES)
+    refresh_token = jwt.encode(claims=data, key=settings.REFERSH_TOKEN_KEY)
+    return Token(user=data['user_id'], access_token=access_token, refresh_token=refresh_token)
 
 
 async def get_current_user(data: Annotated[dict, Depends(has_access)], db: Session = Depends(get_db)) -> UserOut:
@@ -55,24 +52,24 @@ def get_user_me(user: Annotated[UserOut, Depends(get_active_current_user)]):
     return user
     
 
-@router.post('/refresh_token', status_code=200)
-async def refresh(token: str = Depends(has_access)):
+@router.post('/refresh_token')
+async def refresh(token: TokenRefresh):
+    print(token)
     try:
-        data = jwt.decode(token, settings.REFRESH_TOKEN_SECRET_KEY)
-        expiration_time = datetime.utcnow() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
-        data['exp'] = expiration_time
-        access_token = jwt.encode(claims=data, key=settings.ACCESS_TOKEN_SECRET_KEY)
-        return {'accecc_token': access_token}
+        data = jwt.decode(token.refresh_token, settings.REFERSH_TOKEN_KEY)
+        new_access_token = create_access_token(data)
+
+        return {'access_token': new_access_token}
     except JWTError:
         raise credentials_exception
 
 
-@router.post('/sing_in')
-async def sing_in(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: Session = Depends(get_db)):
-    db_user = crud_users.get_user_by_username(db, form_data.username)
+@router.post('/sign_in')
+async def sing_in(user: UserLogin,  db: Session = Depends(get_db)):
+    db_user = crud_users.get_user_by_username(db, user.username)
     if not db_user:
         raise HTTPException(status_code=400, detail="Incorrect username or password")
-    if not verify_password(form_data.password, db_user.hashed_password):
+    if not verify_password(user.password, db_user.hashed_password):
         raise HTTPException(status_code=400, detail="Incorrect username or password")
     try:
         data = {'user_id': jsonable_encoder(db_user.id)}
