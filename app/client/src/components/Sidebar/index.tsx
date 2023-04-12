@@ -8,9 +8,14 @@ import { ImBooks } from 'react-icons/im'
 type SidebarProps = {
     isVisible: boolean
     setVisible: (data: boolean) => void
+    handleLogOut: () => void
 }
 
-const Sidebar = ({ isVisible, setVisible }: SidebarProps): ReactElement => {
+const Sidebar = ({
+    isVisible,
+    setVisible,
+    handleLogOut,
+}: SidebarProps): ReactElement => {
     return (
         <div>
             <div
@@ -117,7 +122,9 @@ const Sidebar = ({ isVisible, setVisible }: SidebarProps): ReactElement => {
                     >
                         <div className={`w-12 h-12 text-2xl`}>
                             <div className="w-12 h-12 flex items-center justify-center color-blue-gray-50 hover:scale-90 hover:text-yellow-800 hover:duration-200">
-                                <RiLogoutBoxRLine />
+                                <RiLogoutBoxRLine
+                                    onClick={(): void => handleLogOut()}
+                                />
                             </div>
                         </div>
                         <div

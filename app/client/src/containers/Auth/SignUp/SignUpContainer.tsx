@@ -1,18 +1,24 @@
 import React, { ReactElement, useState } from 'react'
-import Auth from '../../components/Auth'
-import { loginA } from '../../helpers/Auth/actions'
+import SignUp from '../../../components/Auth/SignUp'
+import { loginA, getUserA } from '../actions'
 import { connect } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
-type AuthContainerProps = {
-    login: () => void
+type SignUpContainerProps = {
+    login: (data: any) => void
+    getUser: () => any
 }
 
-const AuthContainer = ({ login }: AuthContainerProps): ReactElement => {
+const SignUpContainer = ({
+    login,
+    getUser,
+}: SignUpContainerProps): ReactElement => {
     const [isShowPassword, setShowPassword] = useState<boolean>(false)
     const [firstName, setFirstName] = useState<string>('')
     const [lastName, setLastName] = useState<string>('')
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
+    const navigate = useNavigate()
 
     const handleChangeValue = (e: React.FormEvent<HTMLInputElement>): void => {
         switch (e.currentTarget.id) {
@@ -34,11 +40,19 @@ const AuthContainer = ({ login }: AuthContainerProps): ReactElement => {
     }
 
     const handleSubmit = (): void => {
-        login()
+        if (firstName === '1') {
+            login({ username: email, password: password })
+        } else {
+            getUser()
+        }
+    }
+
+    const handleNavToSignIn = (): void => {
+        navigate('/login')
     }
 
     return (
-        <Auth
+        <SignUp
             isShowPassword={isShowPassword}
             firstName={firstName}
             lastName={lastName}
@@ -47,10 +61,12 @@ const AuthContainer = ({ login }: AuthContainerProps): ReactElement => {
             setShowPassword={setShowPassword}
             handleChangeValue={handleChangeValue}
             handleSubmit={handleSubmit}
+            handleNavToSignIn={handleNavToSignIn}
         />
     )
 }
 
 export default connect((state: RootStateInterface) => ({}), {
     login: loginA.request,
-})(AuthContainer)
+    getUser: getUserA.request,
+})(SignUpContainer)

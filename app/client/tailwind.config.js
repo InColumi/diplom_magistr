@@ -18,7 +18,7 @@ module.exports = withMT({
         'auto': 'auto',
         'cover': 'cover',
         'contain': 'contain',
-        'xy110': '110% 110%',
+        'xy110': '110% 108%',
       },
       height: {
         "10v": "10vh",
