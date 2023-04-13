@@ -25,7 +25,7 @@ app.include_router(auth.router)
 def authjwt_exception_handler(request: Request, exc: AuthJWTException):
     return JSONResponse(
         status_code=exc.status_code,
-        content={"detail": exc.message}
+        content={"message": exc.message}
     )
 
 
