@@ -7,3 +7,7 @@ class Books(BaseModel):
     id: UUID
     dateissured: date
     int_id: int
+
+
+class Book(BaseModel):
+    id: int
