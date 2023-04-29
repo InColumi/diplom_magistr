@@ -1,6 +1,4 @@
 from pydantic import BaseSettings
-from typing import Union, Optional
-from datetime import timedelta
 
 class Settings(BaseSettings):
     CONNECT_STRING: str
@@ -10,7 +8,8 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_KEY: str
     ACCESS_TOKEN_EXPIRES: int
 
-
+    PATH_BOOKS: str
+    EXTENSIONS_BOOKS: str
 
     # AUTHJWT_SECRET_KEY: str
     # AUTHJWT_ACCESS_TOKEN_EXPIRES: Optional[int] = None
