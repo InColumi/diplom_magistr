@@ -3,7 +3,11 @@ from sqlalchemy.orm import DeclarativeBase
 import uuid
 
 
-class User(DeclarativeBase):
+class Base(DeclarativeBase):
+    pass
+
+
+class User(Base):
     __tablename__ = "users"
 
     id = Column(type_=Text, primary_key=True, index=True, default=uuid.uuid4)
