@@ -25,5 +25,5 @@ class BookOut(BaseModel):
     bookshelves_name: str
     path_to_image: int
     rating: int
-    is_favorite: Union[bool, None] = None
+    is_favorites: Union[bool, None] = None
     id: UUID
