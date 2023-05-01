@@ -20,6 +20,16 @@ module.exports = withMT({
         'contain': 'contain',
         'xy110': '110% 108%',
       },
+      maxHeight: {
+        '3/5': '60%',
+        '4/5': '80%',
+      },
+      maxWidth: {
+        '1/2': '50%',
+        '1/3': '33%',
+        '2/3': '66%',
+        '4/5': '80%',
+      },
       height: {
         "10v": "10vh",
         "20v": "20vh",
@@ -68,5 +78,5 @@ module.exports = withMT({
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwind-scrollbar")({ nocompatible: true })],
 })
