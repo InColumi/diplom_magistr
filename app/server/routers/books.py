@@ -42,11 +42,12 @@ def get_books(data: Annotated[dict, Depends(has_access)], is_favorites: bool = F
 
 
 @router.post('/change_status_favorite_book', status_code=200)
-def get_books(data: Annotated[dict, Depends(has_access)], book: BookIn, db: Session = Depends(get_db)):
+def change_status_favorite_book(data: Annotated[dict, Depends(has_access)], book: BookIn, db: Session = Depends(get_db)):
     user_id = data.get('user_id')
     if not user_id:
         raise Exception("Problem in '/change_status_favorite_book': Not user_id")
     res = crud_favorites.changed_status_favorite_book(user_id=user_id, db=db, book_id=book.id)
     return res
+
 
 fastapi_pagination.add_pagination(router)

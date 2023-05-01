@@ -22,7 +22,7 @@ def get_books(db: Session, user_id: UUID, only_favorites: bool):
         Books.rating,
         (Favorites.ref_users == user_id).label('is_favorites'))\
         .join(Titles, Titles.int_book_id == Books.int_id)\
-        .join(Favorites, and_(Favorites.ref_books == Books.id, Favorites.ref_users == user_id), isouter= not only_favorites)\
+        .join(Favorites, and_(Favorites.ref_books == Books.id, Favorites.ref_users == user_id), isouter=not only_favorites)\
         .join(Bookshelves, Bookshelves.int_id == Books.bookshelves_id)\
         .join(BookAuthors, BookAuthors.ref_book_id == Books.int_id)\
         .join(Authors, BookAuthors.ref_authors_id == Authors.int_id)
