@@ -11,8 +11,7 @@ class Books(BaseModel):
 
 
 class BookIn(BaseModel):
-    id: int
-    count_new_row: int
+    id: UUID
 
 
 class LimitPages(BaseModel):
