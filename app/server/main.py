@@ -29,6 +29,13 @@ def authjwt_exception_handler(request: Request, exc: AuthJWTException):
         content={"message": exc.message}
     )
 
+@app.exception_handler(Exception)
+def authjwt_exception_handler(request: Request, exc: Exception):
+    return JSONResponse(
+        status_code=404,
+        content={"error": str(exc)}
+    )
+
 
 @app.get("/", status_code=418)
 async def root():
