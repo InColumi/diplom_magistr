@@ -18,8 +18,7 @@ depends_on = None
 
 def upgrade() -> None:
     op.add_column(table_name='books',
-            column=Column(name='rating', type_=Integer, nullable=False, server_default=str(0)))
-
+                  column=Column(name='rating', type_=Integer, nullable=False, server_default=str(0)))
 
 
 def downgrade() -> None:

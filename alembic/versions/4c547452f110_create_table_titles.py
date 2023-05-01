@@ -18,10 +18,10 @@ depends_on = None
 
 def upgrade() -> None:
     op.create_table('titles',
-                     Column(name='id', type_=Uuid, primary_key=True, default=uuid.uuid4()),
-                     Column(name='name', type_=Text, nullable=False),
-                     Column(name='int_id', type_=Integer, nullable=False))
-                   
+                    Column(name='id', type_=Uuid, primary_key=True, default=uuid.uuid4()),
+                    Column(name='name', type_=Text, nullable=False),
+                    Column(name='int_id', type_=Integer, nullable=False))
+
 
 def downgrade() -> None:
     op.drop_table('titles')

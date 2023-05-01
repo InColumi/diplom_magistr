@@ -6,7 +6,7 @@ Create Date: 2023-05-01 09:39:59.617291
 
 """
 from alembic import op
-from sqlalchemy import Column, Uuid, Text, Integer
+from sqlalchemy import Column, Uuid, Integer
 
 # revision identifiers, used by Alembic.
 revision = 'ec82a4bea17a'
@@ -26,4 +26,3 @@ def upgrade() -> None:
 
 def downgrade() -> None:
     op.drop_table('ner')
-
