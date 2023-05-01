@@ -3,7 +3,7 @@ from sqlalchemy import or_
 from dependencies import pwd_context
 from models.users import User
 from schemas.user import UserCreate
-from pydantic import EmailStr, EmailError
+from pydantic import EmailStr
 
 
 def get_user_by_id(db: Session, user_id: int):

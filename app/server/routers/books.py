@@ -1,13 +1,13 @@
 import os
-import json
+import fastapi_pagination
 from crud import crud_books
+from typing import Annotated
 from schemas.books import BookOut
 from sqlalchemy.orm import Session
-from typing import Annotated
 from fastapi import APIRouter, Depends
 from dependencies import get_db, settings, has_access
-from fastapi_pagination import Page, add_pagination 
-import fastapi_pagination
+from fastapi_pagination import Page, add_pagination
+
 
 router = APIRouter(tags=["books"])
 
@@ -43,4 +43,3 @@ def get_books(data: Annotated[dict, Depends(has_access)], db: Session = Depends(
 
 
 add_pagination(router)
-    

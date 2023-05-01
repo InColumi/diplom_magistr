@@ -29,8 +29,9 @@ def authjwt_exception_handler(request: Request, exc: AuthJWTException):
         content={"message": exc.message}
     )
 
+
 @app.exception_handler(Exception)
-def authjwt_exception_handler(request: Request, exc: Exception):
+def exception_exception_handler(request: Request, exc: Exception):
     return JSONResponse(
         status_code=404,
         content={"error": str(exc)}
