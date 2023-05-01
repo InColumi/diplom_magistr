@@ -7,7 +7,6 @@ from schemas.books import BookOut, BookIn
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
 from dependencies import get_db, settings, has_access
-from typing import Union
 
 router = APIRouter(tags=["books"])
 
