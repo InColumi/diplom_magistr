@@ -7,8 +7,7 @@ import WavingHand from '../../../UI/WavingHandSvg'
 
 type SignUpProps = {
     isShowPassword: boolean
-    firstName: string
-    lastName: string
+    login: string
     email: string
     password: string
     setShowPassword: (data: boolean) => void
@@ -19,8 +18,7 @@ type SignUpProps = {
 
 const SignUp = ({
     isShowPassword,
-    firstName,
-    lastName,
+    login,
     email,
     password,
     setShowPassword,
@@ -30,14 +28,14 @@ const SignUp = ({
 }: SignUpProps): ReactElement => {
     return (
         <>
-            <div className="flex justify-center items-center w-100v h-100v bg-nightbg">
+            <div className="flex justify-center items-center w-full h-100v bg-nightbg absolute">
                 <div
                     className="2xl:w-7/12 w-3/5 m-9 flex bg-night items-center h-80v 2xl:h-70v shadow-md shadow-blue-gray-700
                 overflow-hidden bg-login bg-no-repeat bg-cover rounded-3xl opacity-70"
                 >
                     <div className=" w-full grid 2xl:grid-cols-2 xl:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 justify-end">
-                        <div className="2xl:p-24 xl:p-12 grid grid-rows-3 items-center gap-1">
-                            <div className="flex flex-col">
+                        <div className="2xl:p-24 xl:p-12 flex flex-col">
+                            <div className="flex flex-col mb-3">
                                 <div className="flex items-center ">
                                     <h2 className="2xl:text-4xl xl:text-2xl md:text-xl sm:text-lg text-blue-gray-300">
                                         Hi there!
@@ -63,44 +61,25 @@ const SignUp = ({
                                     </button>
                                 </div>
                             </div>
-                            <div className="flex flex-col gap-3">
-                                <div className="flex gap-3 justify-between h-12 items-center">
-                                    <div className="w-3/5">
-                                        <Input
-                                            id="firstname"
-                                            size={'lg'}
-                                            color="blue"
-                                            className="bg-gray-200"
-                                            variant="outlined"
-                                            label="First Name"
-                                            value={firstName}
-                                            onChange={(
-                                                e: React.FormEvent<HTMLInputElement>
-                                            ) => handleChangeValue(e)}
-                                            icon={
-                                                <VscAccount className="h-5 w-5" />
-                                            }
-                                        />
-                                    </div>
-                                    <div className="w-3/5">
-                                        <Input
-                                            id="lastname"
-                                            size={'lg'}
-                                            color="blue"
-                                            className="bg-gray-200"
-                                            variant="outlined"
-                                            label="Last Name"
-                                            value={lastName}
-                                            onChange={(
-                                                e: React.FormEvent<HTMLInputElement>
-                                            ) => handleChangeValue(e)}
-                                            icon={
-                                                <VscAccount className="h-5 w-5" />
-                                            }
-                                        />
-                                    </div>
+                            <div className="flex flex-col gap-3 mb-3">
+                                <div className="w-full my-2">
+                                    <Input
+                                        id="login"
+                                        size={'lg'}
+                                        color="blue"
+                                        className="bg-gray-200"
+                                        variant="outlined"
+                                        label="Login"
+                                        value={login}
+                                        onChange={(
+                                            e: React.FormEvent<HTMLInputElement>
+                                        ) => handleChangeValue(e)}
+                                        icon={
+                                            <VscAccount className="h-5 w-5" />
+                                        }
+                                    />
                                 </div>
-                                <div className="w-full my-3">
+                                <div className="w-full my-2">
                                     <Input
                                         id="email"
                                         size={'lg'}
@@ -115,7 +94,7 @@ const SignUp = ({
                                         icon={<TfiEmail />}
                                     />
                                 </div>
-                                <div className="w-full my-3">
+                                <div className="w-full my-2">
                                     <Input
                                         id="password"
                                         size={'lg'}
@@ -156,7 +135,7 @@ const SignUp = ({
                             </div>
                             <div className="flex justify-end">
                                 <Button
-                                    className="rounded-3xl w-3/7 h-12 normal-case text-md"
+                                    className="rounded-xl w-30 h-12 normal-case text-md"
                                     variant="filled"
                                     onClick={(): void => handleSubmit()}
                                 >

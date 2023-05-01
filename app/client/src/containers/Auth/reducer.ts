@@ -1,6 +1,6 @@
 import { ActionType, getType } from 'typesafe-actions'
 import { Map } from 'immutable'
-import { loginA, getUserA } from './actions'
+import { loginA, getUserA, registerUserA, loguotA } from './actions'
 
 type LoginState = any
 
@@ -13,9 +13,15 @@ const INITIAL_STATE = Map<LoginState>({
 
 export function reducer(
     state = INITIAL_STATE,
-    action: ActionType<typeof loginA | typeof getUserA>
+    action: ActionType<
+        typeof loginA | typeof getUserA | typeof registerUserA | typeof loguotA
+    >
 ): typeof INITIAL_STATE {
     switch (action.type) {
+        case getType(loguotA): {
+            localStorage.clear()
+            return state.set('isAuth', false)
+        }
         case getType(loginA.request): {
             return state.set('isFetching', true)
         }
@@ -32,6 +38,15 @@ export function reducer(
             return state.set('user', action.payload).set('isFetching', false)
         }
         case getType(getUserA.failure): {
+            return state.set('error', true)
+        }
+        case getType(registerUserA.request): {
+            return state.set('isFetching', true)
+        }
+        case getType(registerUserA.success): {
+            return state.set('isFetching', false)
+        }
+        case getType(registerUserA.failure): {
             return state.set('error', true)
         }
         default:

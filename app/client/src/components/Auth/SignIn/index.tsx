@@ -25,13 +25,13 @@ const SignIn = ({
 }: SignInProps): ReactElement => {
     return (
         <>
-            <div className="flex justify-center items-center w-100v h-100v bg-nightbg">
+            <div className="flex justify-center items-center w-full h-100v bg-nightbg absolute">
                 <div
                     className="2xl:w-7/12 w-3/5 m-9 flex bg-night items-center h-80v 2xl:h-70v shadow-md shadow-blue-gray-700
                 overflow-hidden bg-login bg-no-repeat bg-cover rounded-3xl opacity-70"
                 >
                     <div className=" w-full grid 2xl:grid-cols-2 xl:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 justify-end">
-                        <div className="2xl:p-24 xl:p-12 grid grid-rows-3 items-center">
+                        <div className="2xl:p-24 xl:p-12 flex flex-col">
                             <div className="flex flex-col mb-3">
                                 <div className="flex items-center">
                                     <h2 className="2xl:text-4xl xl:text-2xl md:text-xl sm:text-lg text-blue-gray-300">
@@ -66,7 +66,7 @@ const SignIn = ({
                                         color="blue"
                                         className="bg-gray-200"
                                         variant="outlined"
-                                        label="Email"
+                                        label="Email or Login"
                                         value={email}
                                         onChange={(
                                             e: React.FormEvent<HTMLInputElement>
@@ -112,17 +112,17 @@ const SignIn = ({
                                         }
                                     />
                                 </div>
-                            </div>
-                            <div className="flex justify-end">
-                                <Button
-                                    className="rounded-2xl w-3/7 h-12 normal-case text-md"
-                                    variant="filled"
-                                    onClick={(e: SyntheticEvent): void =>
-                                        handleSubmit(e)
-                                    }
-                                >
-                                    Sign In
-                                </Button>
+                                <div className="flex justify-end mt-3">
+                                    <Button
+                                        className="rounded-2xl w-3/7 h-12 normal-case text-md"
+                                        variant="filled"
+                                        onClick={(e: SyntheticEvent): void =>
+                                            handleSubmit(e)
+                                        }
+                                    >
+                                        Sign In
+                                    </Button>
+                                </div>
                             </div>
                         </div>
                     </div>

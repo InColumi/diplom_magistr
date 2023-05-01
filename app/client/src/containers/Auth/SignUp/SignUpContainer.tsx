@@ -1,32 +1,28 @@
 import React, { ReactElement, useState } from 'react'
 import SignUp from '../../../components/Auth/SignUp'
-import { loginA, getUserA } from '../actions'
+import { registerUserA, getUserA } from '../actions'
 import { connect } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 type SignUpContainerProps = {
-    login: (data: any) => void
+    registerUser: (data: any) => void
     getUser: () => any
 }
 
 const SignUpContainer = ({
-    login,
+    registerUser,
     getUser,
 }: SignUpContainerProps): ReactElement => {
     const [isShowPassword, setShowPassword] = useState<boolean>(false)
-    const [firstName, setFirstName] = useState<string>('')
-    const [lastName, setLastName] = useState<string>('')
+    const [login, setLogin] = useState<string>('')
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const navigate = useNavigate()
 
     const handleChangeValue = (e: React.FormEvent<HTMLInputElement>): void => {
         switch (e.currentTarget.id) {
-            case 'firstname':
-                setFirstName(e.currentTarget.value)
-                break
-            case 'lastname':
-                setLastName(e.currentTarget.value)
+            case 'login':
+                setLogin(e.currentTarget.value)
                 break
             case 'email':
                 setEmail(e.currentTarget.value)
@@ -40,11 +36,8 @@ const SignUpContainer = ({
     }
 
     const handleSubmit = (): void => {
-        if (firstName === '1') {
-            login({ username: email, password: password })
-        } else {
-            getUser()
-        }
+        registerUser({ email, password, username: login })
+        handleNavToSignIn()
     }
 
     const handleNavToSignIn = (): void => {
@@ -54,8 +47,7 @@ const SignUpContainer = ({
     return (
         <SignUp
             isShowPassword={isShowPassword}
-            firstName={firstName}
-            lastName={lastName}
+            login={login}
             email={email}
             password={password}
             setShowPassword={setShowPassword}
@@ -67,6 +59,6 @@ const SignUpContainer = ({
 }
 
 export default connect((state: RootStateInterface) => ({}), {
-    login: loginA.request,
+    registerUser: registerUserA.request,
     getUser: getUserA.request,
 })(SignUpContainer)

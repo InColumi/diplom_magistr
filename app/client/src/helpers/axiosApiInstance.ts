@@ -1,10 +1,10 @@
 import axios from 'axios'
 
-const api = axios.create({
+const axiosApiInstance = axios.create({
     baseURL: 'http://26.107.170.245:8000',
 })
 
-api.interceptors.request.use(
+axiosApiInstance.interceptors.request.use(
     async (config) => {
         const accessToken = localStorage.getItem('access_token')
 
@@ -15,7 +15,7 @@ api.interceptors.request.use(
     (error) => Promise.reject(error)
 )
 
-api.interceptors.response.use(
+axiosApiInstance.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config
@@ -34,7 +34,7 @@ api.interceptors.response.use(
 
                 localStorage.setItem('access_token', data.access_token)
 
-                return api(originalRequest)
+                return axiosApiInstance(originalRequest)
             } catch (error) {
                 localStorage.clear()
                 return Promise.reject(error)
@@ -45,4 +45,4 @@ api.interceptors.response.use(
     }
 )
 
-export default api
+export default axiosApiInstance

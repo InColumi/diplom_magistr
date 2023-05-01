@@ -41,12 +41,19 @@ const SignInContainer = ({
         navigate('/register')
     }
 
-    const handleSubmit = (e: SyntheticEvent): void => {
+    const handleSubmit = async (e: SyntheticEvent) => {
         if (email === '' || password === '') return
-        login({
-            username_or_email: email,
-            password: password,
+
+        await login({
+            data: {
+                username_or_email: email,
+                password: password,
+            },
+            // callback: setTimeout(() => navigate('/'), 500),
         })
+        // if (isAuth) {
+        //     navigate('/')
+        // }
     }
 
     useEffect(() => {
