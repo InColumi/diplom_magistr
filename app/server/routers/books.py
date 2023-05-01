@@ -7,7 +7,7 @@ from schemas.books import BookOut, BookIn
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
 from dependencies import get_db, settings, has_access
-
+from typing import Union
 
 router = APIRouter(tags=["books"])
 
@@ -33,16 +33,14 @@ def split_text(text: str) -> str:
 
 
 @router.post('/books', response_model=fastapi_pagination.Page[BookOut])
-def get_books(data: Annotated[dict, Depends(has_access)], db: Session = Depends(get_db)):
+def get_books(data: Annotated[dict, Depends(has_access)], is_favorites: bool = False, db: Session = Depends(get_db)):
+    print(is_favorites)
     user_id = data.get('user_id')
     if not user_id:
         raise Exception("Problem in '/books': Not user_id")
-
-    books = crud_books.get_books(user_id=user_id, db=db)
+    books = crud_books.get_books(user_id=user_id, db=db, only_favorites=is_favorites)
     return fastapi_pagination.paginate(books)
 
-
-fastapi_pagination.add_pagination(router)
 
 @router.post('/change_status_favorite_book', status_code=200)
 def get_books(data: Annotated[dict, Depends(has_access)], book: BookIn, db: Session = Depends(get_db)):
@@ -51,4 +49,5 @@ def get_books(data: Annotated[dict, Depends(has_access)], book: BookIn, db: Sess
         raise Exception("Problem in '/change_status_favorite_book': Not user_id")
     res = crud_favorites.changed_status_favorite_book(user_id=user_id, db=db, book_id=book.id)
     return res
-    
+
+fastapi_pagination.add_pagination(router)
