@@ -1,10 +1,6 @@
 from sqlalchemy import Boolean, Text, Column
-from sqlalchemy.orm import DeclarativeBase
+from models.base import Base
 import uuid
-
-
-class Base(DeclarativeBase):
-    pass
 
 
 class User(Base):
