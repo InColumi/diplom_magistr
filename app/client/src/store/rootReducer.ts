@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux'
 
-import { default as testList } from '../store/test/reducers'
 import { default as login } from '../containers/Auth/reducer'
+import { default as text } from '../containers/Text/reducer'
 
 export const appReducer = combineReducers({
-    testList,
     login,
+    text,
 })

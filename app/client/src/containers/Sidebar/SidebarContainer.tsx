@@ -1,25 +1,29 @@
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { connect } from 'react-redux'
+
+import { loguotA } from '../Auth/actions'
 import Sidebar from '../../components/Sidebar'
 
-// type SidebarContainerProps = {}
+type SidebarContainerProps = {
+    setOpen: (data: boolean) => void
+    loguot: () => void
+}
 
-const SidebarContainer = (): ReactElement => {
-    const [isVisible, setVisible] = useState<boolean>(false)
+const SidebarContainer = ({
+    setOpen,
+    loguot,
+}: SidebarContainerProps): ReactElement => {
     const navigate = useNavigate()
 
     const handleLogOut = (): void => {
-        localStorage.clear()
+        loguot()
         navigate('/login')
     }
 
-    return (
-        <Sidebar
-            isVisible={isVisible}
-            setVisible={setVisible}
-            handleLogOut={handleLogOut}
-        />
-    )
+    return <Sidebar setOpen={setOpen} handleLogOut={handleLogOut} />
 }
 
-export default SidebarContainer
+export default connect((state: RootStateInterface) => ({}), {
+    loguot: loguotA,
+})(SidebarContainer)

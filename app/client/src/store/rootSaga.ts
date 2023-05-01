@@ -1,8 +1,8 @@
 import { spawn } from 'redux-saga/effects'
-import testSaga from '../store/test/sagas'
 import loginSaga from '../containers/Auth/sagas'
+import textSaga from '../containers/Text/sagas'
 
 export default function* rootSagas() {
-    yield spawn(testSaga)
     yield spawn(loginSaga)
+    yield spawn(textSaga)
 }

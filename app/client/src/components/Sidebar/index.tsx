@@ -1,144 +1,97 @@
 import React, { ReactElement } from 'react'
-import { IoIosArrowDropleft } from 'react-icons/io'
-import { BsFillPersonFill } from 'react-icons/bs'
+import { Link } from 'react-router-dom'
+
+import { HiHome } from 'react-icons/hi'
 import { MdFavorite } from 'react-icons/md'
 import { RiSettingsFill, RiLogoutBoxRLine } from 'react-icons/ri'
 import { ImBooks } from 'react-icons/im'
 
+type SideBarIconProps = {
+    icon: ReactElement
+    text: string
+    onClick?: (data: any) => void
+}
+
+const SideBarIcon = ({
+    icon,
+    text,
+    onClick,
+}: SideBarIconProps): ReactElement => {
+    return (
+        <div
+            className="relative flex items-center justify-center h-12 w-12
+        mt-2 mb-2 mx-auto shadow-lg bg-gray-800 text-white hover:bg-yellow-700
+        hover:text-white rounded-3xl hover:rounded-xl transition-all duration-300 ease-linear
+        cursor-pointer group"
+            onClick={onClick}
+        >
+            {icon}
+            <span
+                className="absolute w-auto p-2 m-2 min-w-max left-14 rounded-md shadow-md
+                text-white bg-gray-900 text-xs font-bold transition-all duration-100
+                origin-left scale-0 group-hover:scale-100"
+            >
+                {text}
+            </span>
+        </div>
+    )
+}
+
 type SidebarProps = {
-    isVisible: boolean
-    setVisible: (data: boolean) => void
+    setOpen: (data: boolean) => void
     handleLogOut: () => void
 }
 
-const Sidebar = ({
-    isVisible,
-    setVisible,
-    handleLogOut,
-}: SidebarProps): ReactElement => {
+const SideBar = ({ setOpen, handleLogOut }: SidebarProps): ReactElement => {
     return (
-        <div>
-            <div
-                className={`${
-                    isVisible ? 'w-52' : 'w-20'
-                } duration-300 h-100v bg-nightbg relative rounded-r-3xl p5 pt-8`}
-            >
-                <IoIosArrowDropleft
-                    className={`cursor-pointer w-8 h-8 absolute -right-4 top-10 text-yellow-800 bg-nightbg rounded-full ${
-                        !isVisible && 'rotate-180'
-                    }`}
-                    onClick={(): void => setVisible(!isVisible)}
+        <div className="relative top-0 left-0 h-screen w-16 m-0 flex flex-col justify-between bg-night border-nightbg border-r-2 text-white shadow-lg z-10">
+            <div className="flex flex-col gap-5 pt-5">
+                <img
+                    src={require('../../UI/logonight.png')}
+                    alt=""
+                    className={`w-12 h-12 cursor-pointer duration-500 ml-2.5`}
                 />
-                <div className="flex gap-x-3 items-center">
-                    <img
-                        src={require('../../UI/logonight.png')}
-                        alt=""
-                        className={`w-12 h-12 cursor-pointer duration-500 ml-2.5`}
+                <div className="flex flex-col gap-5">
+                    <Link to={'/'}>
+                        <SideBarIcon
+                            text={'Home'}
+                            icon={<HiHome size="28" />}
+                        />
+                    </Link>
+                    <Link to={'/library'}>
+                        <SideBarIcon
+                            text={'Library'}
+                            icon={<ImBooks size="28" />}
+                        />
+                    </Link>
+                    <Link to={'/favourite'}>
+                        <SideBarIcon
+                            text={'Favourite'}
+                            icon={<MdFavorite size="28" />}
+                        />
+                    </Link>
+                    {/* <Link to={'/settings'}> */}
+                    <SideBarIcon
+                        text={'Settings'}
+                        icon={<RiSettingsFill size="28" />}
+                        onClick={(): void => setOpen(true)}
                     />
-                    <h1
-                        className={`text-white origin-left font-medium text-xl duration-300 ${
-                            !isVisible && 'scale-0'
-                        }`}
-                    >
-                        Vlad
-                    </h1>
+                    {/* </Link> */}
                 </div>
-                <ul className="pt-8 flex flex-col gap-3">
-                    <li
-                        className={`text-md text-white flex items-center gap-x-4 cursor-pointer p-2 
-                            hover:after:w-4 hover:after:h-2 hover:after:bg-yellow-800 hover:after:rounded-full`}
-                    >
-                        <div className={`w-12 h-12 text-2xl`}>
-                            <div className="w-12 h-12 flex items-center justify-center color-blue-gray-50 hover:scale-90 hover:text-yellow-800 hover:duration-200">
-                                <ImBooks />
-                            </div>
-                        </div>
-                        <div
-                            className={`${
-                                !isVisible && 'scale-0'
-                            } duration-300 origin-left flex justify-between items-center w-full`}
-                        >
-                            Library
-                        </div>
-                    </li>
-                    <li
-                        className={`text-md text-white flex items-center gap-x-4 cursor-pointer p-2 
-                            hover:after:w-4 hover:after:h-2 hover:after:bg-yellow-800 hover:after:rounded-full`}
-                    >
-                        <div className={`w-12 h-12 text-2xl`}>
-                            <div className="w-12 h-12 flex items-center justify-center color-blue-gray-50 hover:scale-90 hover:text-yellow-800 hover:duration-200">
-                                <MdFavorite />
-                            </div>
-                        </div>
-                        <div
-                            className={`${
-                                !isVisible && 'scale-0'
-                            } duration-300 origin-left flex justify-between items-center w-full`}
-                        >
-                            Favourite
-                        </div>
-                    </li>
-                    <li
-                        className={`text-md text-white flex items-center gap-x-4 cursor-pointer p-2 
-                            hover:after:w-4 hover:after:h-2 hover:after:bg-yellow-800 hover:after:rounded-full`}
-                    >
-                        <div className={`w-12 h-12 text-2xl`}>
-                            <div className="w-12 h-12 flex items-center justify-center color-blue-gray-50 hover:scale-90 hover:text-yellow-800 hover:duration-200">
-                                <BsFillPersonFill />
-                            </div>
-                        </div>
-                        <div
-                            className={`${
-                                !isVisible && 'scale-0'
-                            } duration-300 origin-left flex justify-between items-center w-full`}
-                        >
-                            Profile
-                        </div>
-                    </li>
-                    <li
-                        className={`text-md text-white flex items-center gap-x-4 cursor-pointer p-2 
-                            ${
-                                isVisible ? 'w-52' : 'w-20'
-                            } hover:after:w-4 hover:after:h-2 hover:after:bg-yellow-800 hover:after:rounded-full`}
-                    >
-                        <div className={`w-12 h-12 text-2xl`}>
-                            <div className="w-12 h-12 flex items-center justify-center color-blue-gray-50 hover:scale-90 hover:text-yellow-800 hover:duration-200">
-                                <RiSettingsFill />
-                            </div>
-                        </div>
-                        <div
-                            className={`${
-                                !isVisible && 'scale-0'
-                            } duration-300 origin-left flex justify-between items-center w-full`}
-                        >
-                            Settings
-                        </div>
-                    </li>
-                    <li
-                        className={`text-md text-white flex items-center gap-x-4 cursor-pointer p-2 fixed bottom-3 
-                        ${
-                            isVisible ? 'w-52' : 'w-20'
-                        } hover:after:w-4 hover:after:h-2 hover:after:bg-yellow-800 hover:after:rounded-full`}
-                    >
-                        <div className={`w-12 h-12 text-2xl`}>
-                            <div className="w-12 h-12 flex items-center justify-center color-blue-gray-50 hover:scale-90 hover:text-yellow-800 hover:duration-200">
-                                <RiLogoutBoxRLine
-                                    onClick={(): void => handleLogOut()}
-                                />
-                            </div>
-                        </div>
-                        <div
-                            className={`${
-                                !isVisible && 'scale-0'
-                            } duration-300 origin-left flex justify-between items-center w-full`}
-                        >
-                            Log out
-                        </div>
-                    </li>
-                </ul>
+            </div>
+            <div className="px-2">
+                <div
+                    className="pb-5 border-t pt-5 border-gray-400"
+                    onClick={(): void => handleLogOut()}
+                >
+                    <SideBarIcon
+                        text={'Logout'}
+                        icon={<RiLogoutBoxRLine size="28" />}
+                    />
+                </div>
             </div>
         </div>
     )
 }
 
-export default Sidebar
+export default SideBar

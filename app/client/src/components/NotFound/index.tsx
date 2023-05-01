@@ -1,10 +1,11 @@
 import React, { ReactElement } from 'react'
 import { Button } from '@material-tailwind/react'
 import NotFoundSvg from './NotFound'
+import { Link } from 'react-router-dom'
 
 const NotFound = (): ReactElement => {
     return (
-        <div className="flex flex-col justify-center items-center bg-nightbg h-100v">
+        <div className="flex flex-col justify-center items-center bg-nightbg h-full w-full absolute">
             <div className="h-70v w-70v">
                 <NotFoundSvg />
             </div>
@@ -18,14 +19,16 @@ const NotFound = (): ReactElement => {
                     <p>Let's find a better place for you to go!</p>
                 </h2>
             </div>
-            <Button
-                className="rounded-3xl w-3/7 h-12 normal-case text-md"
-                variant="filled"
-                size="lg"
-                color="blue-gray"
-            >
-                Back to Home
-            </Button>
+            <Link to={'/'}>
+                <Button
+                    className="rounded-3xl w-3/7 h-12 normal-case text-md"
+                    variant="filled"
+                    size="lg"
+                    color="blue-gray"
+                >
+                    Back to Home
+                </Button>
+            </Link>
         </div>
     )
 }
