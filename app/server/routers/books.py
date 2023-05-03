@@ -3,9 +3,10 @@ import fastapi_pagination
 from crud import crud_books
 from crud import crud_favorites
 from typing import Annotated
-from schemas.books import BookOut, BookIn
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
+from schemas.books import BookOut, BookIn
+from fastapi.responses import StreamingResponse
 from dependencies import get_db, settings, has_access
 
 router = APIRouter(tags=["books"])
@@ -48,6 +49,18 @@ def change_status_favorite_book(data: Annotated[dict, Depends(has_access)], book
         raise Exception("Problem in '/change_status_favorite_book': Not user_id")
     res = crud_favorites.changed_status_favorite_book(user_id=user_id, db=db, book_id=book.id)
     return res
+
+
+@router.post('/send_audio_stream')
+def send_audio_stream():
+    id_book = 82
+    file = f'{id_book}{settings.EXTENSIONS_SONGS}'
+    path = os.path.join(settings.PATH_SONGS, file)
+    def get_stream():
+        with open(path, 'rb') as f:
+            yield from f
+
+    return StreamingResponse(get_stream(), media_type='audio/mp3')
 
 
 fastapi_pagination.add_pagination(router)
