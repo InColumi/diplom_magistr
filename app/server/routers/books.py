@@ -5,7 +5,7 @@ from crud import crud_favorites
 from typing import Annotated
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
-from schemas.books import BookOut, BookIn
+from schemas.books import BookOut, BookIn, BookEvaluation
 from fastapi.responses import StreamingResponse
 from dependencies import get_db, settings, has_access
 
@@ -61,6 +61,14 @@ def send_audio_stream():
             yield from f
 
     return StreamingResponse(get_stream(), media_type='audio/mp3')
+
+
+@router.post('/add_evaluation_book')
+def add_evaluation_book(data: Annotated[dict, Depends(has_access)], book: BookEvaluation, db: Session = Depends(get_db)):
+    user_id = data.get('user_id')
+    if not user_id:
+        raise Exception("Problem in '/add_evaluation_book': Not user_id")
+    crud_books.evaluation_book(db, user_id, book.id, book.value)
 
 
 fastapi_pagination.add_pagination(router)

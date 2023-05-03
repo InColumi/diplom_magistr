@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 from datetime import date
 from uuid import UUID
 from typing import Union
@@ -27,3 +27,13 @@ class BookOut(BaseModel):
     rating: int
     is_favorites: Union[bool, None] = None
     id: UUID
+
+
+class BookEvaluation(BaseModel):
+    id: UUID
+    value: int
+
+    @validator('value')
+    def value_must_be_between_1_5(cls, value):
+        assert value >= 1 and value <= 5, 'value must be in interval (1, 5)'
+        return value
