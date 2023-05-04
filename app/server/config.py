@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     PATH_SONGS: str
     EXTENSIONS_BOOKS: str
     EXTENSIONS_SONGS: str
-
+    COUNT_BOOKS_IN_RECOMENDATION: int
     # AUTHJWT_SECRET_KEY: str
     # AUTHJWT_ACCESS_TOKEN_EXPIRES: Optional[int] = None
     # AUTHJWT_REFRESH_TOKEN_EXPIRES: Optional[int] = None
