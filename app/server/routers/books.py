@@ -2,7 +2,7 @@ import os
 import fastapi_pagination
 from crud import crud_books
 from crud import crud_favorites
-from typing import Annotated
+from typing import Annotated, Optional
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
 from schemas.books import BookOut, BookIn, BookEvaluation
@@ -12,7 +12,7 @@ from dependencies import get_db, settings, has_access
 router = APIRouter(tags=["books"])
 
 
-def get_text_from_file(id: int) -> any:
+def get_text_from_file(id: int) -> str:
     file = f'{id}{settings.EXTENSIONS_BOOKS}'
     path = os.path.join(settings.PATH_BOOKS, file)
     try:
@@ -38,7 +38,7 @@ def get_books(data: Annotated[dict, Depends(has_access)], is_favorites: bool = F
     user_id = data.get('user_id')
     if not user_id:
         raise Exception("Problem in '/books': Not user_id")
-    books = crud_books.get_books(user_id=user_id, db=db, only_favorites=is_favorites)
+    books = crud_books.get_list(user_id=user_id, db=db, only_favorites=is_favorites)
     return fastapi_pagination.paginate(books)
 
 
@@ -68,7 +68,23 @@ def add_evaluation_book(data: Annotated[dict, Depends(has_access)], book: BookEv
     user_id = data.get('user_id')
     if not user_id:
         raise Exception("Problem in '/add_evaluation_book': Not user_id")
-    crud_books.evaluation_book(db, user_id, book.id, book.value)
+    crud_books.add_evaluation(db, user_id, book.id, book.value)
 
+
+@router.post('/get_recomendation')
+def get_recomendation(data: Annotated[dict, Depends(has_access)], limit: Optional[int] = 10, db: Session = Depends(get_db)):
+    user_id = data.get('user_id')
+    if not user_id:
+        raise Exception("Problem in '/get_recomendation': Not user_id")
+    output = {}
+    output['books'] = crud_books.get_recommendation(db, user_id, limit)
+    return output
+
+
+@router.post('/test')
+def test(db: Session = Depends(get_db)):
+    from models.books import Books
+    
+    return {'hi': 'from test'}
 
 fastapi_pagination.add_pagination(router)
