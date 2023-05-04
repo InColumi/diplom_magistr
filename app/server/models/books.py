@@ -11,6 +11,12 @@ class Books(Base):
     bookshelves_id = Column(type_=Integer, nullable=False)
     dateissued = Column(type_=Text, nullable=False)
     rating = Column(type_=Integer, nullable=False, default=0)
+    total_pages = Column(type_=Integer, nullable=False)
 
     def __repr__(self) -> str:
-        return f"Books(id={self.id}, int_id={self.int_id}, dateissued={self.dateissued}, bookshelves_id={self.bookshelves_id}, rating={self.rating})"
+        return f"Books(id={self.id}, \
+                 int_id={self.int_id}, \
+                 dateissued={self.dateissued}, \
+                 bookshelves_id={self.bookshelves_id}, \
+                 rating={self.rating}, \
+                 total_pages={self.total_pages})"
