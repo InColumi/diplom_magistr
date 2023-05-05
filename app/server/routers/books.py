@@ -1,4 +1,5 @@
 import os
+import pathlib
 import fastapi_pagination
 from crud import crud_books
 from crud import crud_favorites
@@ -33,16 +34,14 @@ def change_status_favorite_book(data: Annotated[dict, Depends(has_access)], book
 
 @router.get('/send_audio_stream')
 def send_audio_stream(id_book: int):
-    id_book = 36
+    id_book = 111
     file = f'{id_book}{settings.EXTENSIONS_SONGS}'
     path = os.path.join(settings.PATH_SONGS, file)
     def get_stream():
         with open(path, 'rb') as f:
             yield from f
 
- 
     return FileResponse(path, media_type='audio/mp3')
-    # return FileResponse(get_stream(), media_type='audio/mp3')
 
 
 @router.post('/add_evaluation_book')

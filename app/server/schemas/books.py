@@ -24,7 +24,7 @@ class BookOut(BaseModel):
     authors: list
     bookshelves_name: str
     path_to_image: int
-    rating: int
+    rating_avg: int
     is_favorites: Optional[bool] = None
     id: UUID
 
