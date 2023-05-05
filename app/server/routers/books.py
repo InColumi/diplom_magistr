@@ -5,8 +5,8 @@ from crud import crud_favorites
 from typing import Annotated, Optional
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
-from schemas.books import BookOut, BookIn, BookEvaluation
-from fastapi.responses import StreamingResponse
+from schemas.books import BookOut, BookIn, BookUsersCurrentPage, BookUsersEvaluation
+from fastapi.responses import StreamingResponse, FileResponse
 from dependencies import get_db, settings, has_access
 
 router = APIRouter(tags=["books"])
@@ -51,24 +51,34 @@ def change_status_favorite_book(data: Annotated[dict, Depends(has_access)], book
     return res
 
 
-@router.post('/send_audio_stream')
-def send_audio_stream():
-    id_book = 82
+@router.get('/send_audio_stream')
+def send_audio_stream(id_book: int):
+    id_book = 36
     file = f'{id_book}{settings.EXTENSIONS_SONGS}'
     path = os.path.join(settings.PATH_SONGS, file)
     def get_stream():
         with open(path, 'rb') as f:
             yield from f
 
-    return StreamingResponse(get_stream(), media_type='audio/mp3')
+ 
+    return FileResponse(path, media_type='audio/mp3')
+    # return FileResponse(get_stream(), media_type='audio/mp3')
 
 
 @router.post('/add_evaluation_book')
-def add_evaluation_book(data: Annotated[dict, Depends(has_access)], book: BookEvaluation, db: Session = Depends(get_db)):
+def add_evaluation_book(data: Annotated[dict, Depends(has_access)], book: BookUsersEvaluation, db: Session = Depends(get_db)):
     user_id = data.get('user_id')
     if not user_id:
         raise Exception("Problem in '/add_evaluation_book': Not user_id")
     crud_books.add_evaluation(db, user_id, book.id, book.value)
+
+
+@router.post('/save_current_page')
+def save_current_book_page(data: Annotated[dict, Depends(has_access)], book: BookUsersCurrentPage, db: Session = Depends(get_db)):
+    user_id = data.get('user_id')
+    if not user_id:
+        raise Exception("Problem in '/save_current_page': Not user_id")
+    crud_books.save_current_page(db, user_id, book.id, book.value)
 
 
 @router.post('/get_recomendation')
