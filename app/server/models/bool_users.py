@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Uuid, Integer, ForeignKeyConstraint, PrimaryKeyConstraint
+from sqlalchemy import Column, Uuid, Integer, ForeignKeyConstraint
 from models.base import Base
 
 

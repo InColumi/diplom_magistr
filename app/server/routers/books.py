@@ -1,5 +1,4 @@
 import os
-import pathlib
 import fastapi_pagination
 from crud import crud_books
 from crud import crud_favorites
@@ -7,7 +6,7 @@ from typing import Annotated, Optional
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
 from schemas.books import BookOut, BookIn, BookUsersCurrentPage, BookUsersEvaluation
-from fastapi.responses import StreamingResponse, FileResponse
+from fastapi.responses import FileResponse
 from dependencies import get_db, settings, has_access
 
 router = APIRouter(tags=["books"])
@@ -37,9 +36,6 @@ def send_audio_stream(id_book: int):
     id_book = 111
     file = f'{id_book}{settings.EXTENSIONS_SONGS}'
     path = os.path.join(settings.PATH_SONGS, file)
-    def get_stream():
-        with open(path, 'rb') as f:
-            yield from f
 
     return FileResponse(path, media_type='audio/mp3')
 
@@ -82,10 +78,10 @@ def get_text_book(data: Annotated[dict, Depends(has_access)], book: BookIn, db: 
     return output
 
 
-@router.post('/test')
-def test(db: Session = Depends(get_db)):
-    from models.books import Books
-    
-    return {'hi': 'from test'}
+# @router.post('/test')
+# def test(db: Session = Depends(get_db)):
+#     from models.books import Books
+
+#     return {'hi': 'from test'}
 
 fastapi_pagination.add_pagination(router)

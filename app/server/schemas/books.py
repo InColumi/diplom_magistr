@@ -32,7 +32,7 @@ class BookOut(BaseModel):
 class BookUsersCurrentPage(BaseModel):
     id: UUID
     current_page: int
-    
+
     @validator('current_page')
     def current_page_must_be_positive(cls, value):
         assert value >= 0, 'value must be >= 0'

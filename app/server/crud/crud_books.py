@@ -37,7 +37,7 @@ def get_list(db: Session, user_id: UUID, only_favorites: bool) -> list:
 def add_evaluation(db: Session, user_id: UUID, book_id: UUID, value: int):
     evaluation_db = db.query(BookUsers).where(BookUsers.ref_books == book_id, BookUsers.ref_users == user_id).first()
     if not evaluation_db:
-        db.add(BookUsers(ref_books=book_id, ref_users=user_id, evaluation = value))
+        db.add(BookUsers(ref_books=book_id, ref_users=user_id, evaluation=value))
     else:
         evaluation_db.value = value
 
@@ -59,7 +59,7 @@ def get_recommendation(db: Session, user_id: UUID, limit: int):
         authors_agg,
         Bookshelves.name.label('bookshelves_name'),
         Books.int_id.label('path_to_image'),
-        Books.rating_avg,\
+        Books.rating_avg,
         (Favorites.ref_users == user_id).label('is_favorites')
         )\
         .join(Titles, Titles.int_book_id == Books.int_id)\
@@ -69,8 +69,8 @@ def get_recommendation(db: Session, user_id: UUID, limit: int):
         .join(Authors, BookAuthors.ref_authors_id == Authors.int_id)\
         .where(Favorites.ref_users != user_id)
     q = q.group_by(Books.id, Books.dateissued, Titles.name, Bookshelves.name, Books.int_id, Books.rating_avg, Favorites.ref_users)\
-        .order_by(func.random()).limit(limit)
-        # .limit(settings.COUNT_BOOKS_IN_RECOMENDATION)
+        .order_by(func.random()).limit(limit)\
+        .limit(settings.COUNT_BOOKS_IN_RECOMENDATION)
     return [i._asdict() for i in db.execute(q)]
 
 
