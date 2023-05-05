@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     EXTENSIONS_BOOKS: str
     EXTENSIONS_SONGS: str
     COUNT_BOOKS_IN_RECOMENDATION: int
+    COUNT_ROWS_ON_ONE_PAGE: int
     # AUTHJWT_SECRET_KEY: str
     # AUTHJWT_ACCESS_TOKEN_EXPIRES: Optional[int] = None
     # AUTHJWT_REFRESH_TOKEN_EXPIRES: Optional[int] = None
