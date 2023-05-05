@@ -6,7 +6,7 @@ from models.authors import Authors
 from models.book_authors import BookAuthors
 from models.bookshelves import Bookshelves
 from models.favorites import Favorites
-from models.evaluation import Evaluation
+from models.bool_users import BookUsers
 from sqlalchemy.dialects.postgresql import ARRAY
 from uuid import UUID
 from dependencies import settings
@@ -34,11 +34,19 @@ def get_list(db: Session, user_id: UUID, only_favorites: bool) -> list:
 
 
 def add_evaluation(db: Session, user_id: UUID, book_id: UUID, value: int):
-    evaluation_db = db.query(Evaluation).where(Evaluation.ref_books == book_id, Evaluation.ref_users == user_id).first()
+    evaluation_db = db.query(BookUsers).where(BookUsers.ref_books == book_id, BookUsers.ref_users == user_id).first()
     if not evaluation_db:
-        db.add(Evaluation(ref_books=book_id, ref_users=user_id, value = value))
+        db.add(BookUsers(ref_books=book_id, ref_users=user_id, evaluation = value))
     else:
         evaluation_db.value = value
+
+
+def save_current_page(db: Session, user_id: UUID, book_id: UUID, current_page: int):
+    data = db.query(BookUsers).where(BookUsers.ref_books == book_id, BookUsers.ref_users == user_id).first()
+    if not data:
+        db.add(BookUsers(ref_books=book_id, ref_users=user_id, current_page=current_page))
+    else:
+        data.current_page = current_page
 
 
 def get_recommendation(db: Session, user_id: UUID, limit: int):
