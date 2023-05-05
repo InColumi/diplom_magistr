@@ -35,7 +35,7 @@ class BookUsersCurrentPage(BaseModel):
     
     @validator('current_page')
     def current_page_must_be_positive(cls, value):
-        assert value >= 0, 'value must be positive'
+        assert value >= 0, 'value must be >= 0'
         return value
 
 
