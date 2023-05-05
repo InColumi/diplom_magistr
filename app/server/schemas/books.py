@@ -1,7 +1,7 @@
 from pydantic import BaseModel, validator
 from datetime import date
 from uuid import UUID
-from typing import Union
+from typing import Optional
 
 
 class Books(BaseModel):
@@ -25,11 +25,21 @@ class BookOut(BaseModel):
     bookshelves_name: str
     path_to_image: int
     rating: int
-    is_favorites: Union[bool, None] = None
+    is_favorites: Optional[bool] = None
     id: UUID
 
 
-class BookEvaluation(BaseModel):
+class BookUsersCurrentPage(BaseModel):
+    id: UUID
+    current_page: int
+    
+    @validator('current_page')
+    def current_page_must_be_positive(cls, value):
+        assert value >= 0, 'value must be positive'
+        return value
+
+
+class BookUsersEvaluation(BaseModel):
     id: UUID
     value: int
 
