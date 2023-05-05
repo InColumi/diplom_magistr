@@ -12,26 +12,6 @@ from dependencies import get_db, settings, has_access
 router = APIRouter(tags=["books"])
 
 
-def get_text_from_file(id: int) -> str:
-    file = f'{id}{settings.EXTENSIONS_BOOKS}'
-    path = os.path.join(settings.PATH_BOOKS, file)
-    try:
-        with open(path, 'r', encoding='utf-8') as f:
-            return f.read()
-    except Exception as e:
-        print(str(e))
-        raise Exception(e)
-
-
-def split_text(text: str) -> str:
-    split_size = 100
-    text = text[:1000]
-    print(text)
-    count = int(len(text) / split_size)
-    text = [text[i * split_size: (i + 1) * split_size] for i in range(count)]
-    print(text)
-
-
 @router.post('/books', response_model=fastapi_pagination.Page[BookOut])
 def get_books(data: Annotated[dict, Depends(has_access)], is_favorites: bool = False, db: Session = Depends(get_db)):
     print(is_favorites)
@@ -78,7 +58,7 @@ def save_current_book_page(data: Annotated[dict, Depends(has_access)], book: Boo
     user_id = data.get('user_id')
     if not user_id:
         raise Exception("Problem in '/save_current_page': Not user_id")
-    crud_books.save_current_page(db, user_id, book.id, book.value)
+    crud_books.save_current_page(db, user_id, book.id, book.current_page)
 
 
 @router.post('/get_recomendation')
@@ -88,6 +68,18 @@ def get_recomendation(data: Annotated[dict, Depends(has_access)], limit: Optiona
         raise Exception("Problem in '/get_recomendation': Not user_id")
     output = {}
     output['books'] = crud_books.get_recommendation(db, user_id, limit)
+    return output
+
+
+@router.post('/get_text')
+def get_text_book(data: Annotated[dict, Depends(has_access)], book: BookIn, db: Session = Depends(get_db)):
+    user_id = data.get('user_id')
+    if not user_id:
+        raise Exception("Problem in '/get_text': Not user_id")
+    items = crud_books.get_text(db, book.id)
+    output = {}
+    output['items'] = items
+    output['total_pages'] = len(items)
     return output
 
 
