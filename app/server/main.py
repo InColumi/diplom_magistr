@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Request
-from routers import auth, books, authors, search
+from routers import auth, books, authors
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_jwt_auth.exceptions import AuthJWTException
 from fastapi.responses import JSONResponse
@@ -20,7 +20,6 @@ app.add_middleware(
 
 app.include_router(auth.router)
 app.include_router(books.router)
-app.include_router(search.router)
 app.include_router(authors.router)
 
 

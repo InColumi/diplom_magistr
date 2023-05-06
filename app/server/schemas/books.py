@@ -14,6 +14,11 @@ class BookIn(BaseModel):
     id: UUID
 
 
+class BookFilters(BaseModel):
+    author: Optional[str]
+    title: Optional[str]
+
+
 class LimitPages(BaseModel):
     pages: int
 

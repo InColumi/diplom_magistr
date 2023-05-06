@@ -16,8 +16,11 @@ from uuid import UUID
 from dependencies import settings
 from sqlalchemy import func, or_
 
-def get_list(db: Session, user_id: UUID, only_favorites: bool) -> list:
+def get_list(db: Session, user_id: UUID, only_favorites: bool, title_filter: str = None, author_filter: str = None) -> list:
     authors_agg = func.array_agg(Authors.name, type_=ARRAY(Text)).label('authors')
+
+    title = Titles.name.ilike(f"%{title_filter}%")
+    author = Authors.name.ilike(f"%{author_filter}%")
     q = select(
         Books.id,
         Books.dateissued,
@@ -32,6 +35,10 @@ def get_list(db: Session, user_id: UUID, only_favorites: bool) -> list:
         .join(Bookshelves, Bookshelves.int_id == Books.bookshelves_id)\
         .join(BookAuthors, BookAuthors.ref_book_id == Books.int_id)\
         .join(Authors, BookAuthors.ref_authors_id == Authors.int_id)
+    if title_filter:
+        q = q.filter(title)
+    if author_filter: 
+        q = q.filter(author)
     q = q.group_by(Books.id, Books.dateissued, Titles.name, Bookshelves.name, Books.int_id, Books.rating_avg, Favorites.ref_users)\
         .order_by(Titles.name)
     return [i._asdict() for i in db.execute(q)]
@@ -103,26 +110,3 @@ def get_text(db: Session, book_id: UUID) -> list:
         raise Exception(f'Book with id: {book_id}, not exist in DB.')
     text = get_text_from_file(data.int_id)
     return split_text(text)
-
-def get_books_by_smart_search(db: Session, phrase: str, user_id: UUID):
-    authors_agg = func.array_agg(Authors.name, type_=ARRAY(Text)).label('authors')
-    title = Titles.name.ilike(f'%{phrase}%')
-    author = Authors.name.ilike(f'%{phrase}%')
-    q = select(
-        Books.id,
-        Books.dateissued,
-        Titles.name,
-        authors_agg,
-        Bookshelves.name.label('bookshelves_name'),
-        Books.int_id.label('path_to_image'),
-        Books.rating_avg,
-        (Favorites.ref_users == user_id).label('is_favorites')
-        )\
-        .join(Titles, Titles.int_book_id == Books.int_id)\
-        .join(Favorites, Favorites.ref_books == Books.id, isouter=True)\
-        .join(Bookshelves, Bookshelves.int_id == Books.bookshelves_id)\
-        .join(BookAuthors, BookAuthors.ref_book_id == Books.int_id)\
-        .join(Authors, BookAuthors.ref_authors_id == Authors.int_id)\
-        .filter(or_(title, author))
-    q = q.group_by(Books.id, Books.dateissued, Titles.name, Bookshelves.name, Books.int_id, Books.rating_avg, Favorites.ref_users)
-    return [i._asdict() for i in db.execute(q)]

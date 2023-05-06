@@ -5,7 +5,7 @@ from crud import crud_favorites
 from typing import Annotated, Optional
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
-from schemas.books import BookOut, BookIn, BookUsersCurrentPage, BookUsersEvaluation
+from schemas.books import BookOut, BookIn, BookUsersCurrentPage, BookUsersEvaluation, BookFilters
 from fastapi.responses import FileResponse
 from dependencies import get_db, settings, has_access
 
@@ -13,11 +13,11 @@ router = APIRouter(tags=["books"])
 
 
 @router.post('/books', response_model=fastapi_pagination.Page[BookOut])
-def get_books(data: Annotated[dict, Depends(has_access)], is_favorites: bool = False, db: Session = Depends(get_db)):
+def get_books(data: Annotated[dict, Depends(has_access)], input: BookFilters, is_favorites: bool = False, db: Session = Depends(get_db)):
     user_id = data.get('user_id')
     if not user_id:
         raise Exception("Problem in '/books': Not user_id")
-    books = crud_books.get_list(user_id=user_id, db=db, only_favorites=is_favorites)
+    books = crud_books.get_list(user_id=user_id, db=db, only_favorites=is_favorites, title_filter=input.title, author_filter=input.author)
     return fastapi_pagination.paginate(books)
 
 
