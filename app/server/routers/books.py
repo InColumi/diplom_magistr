@@ -35,11 +35,10 @@ def change_status_favorite_book(data: Annotated[dict, Depends(has_access)], book
 
 @router.get('/send_audio_stream')
 def send_audio_stream(id_book: int):
-    # id_book = 36
     file = f'{id_book}{settings.EXTENSIONS_SONGS}'
     path = os.path.join(settings.PATH_SONGS, file)
-
-    return FileResponse(path, media_type='audio/mpeg')
+    headers = {'accept-ranges': 'bytes'}
+    return FileResponse(path, headers=headers)
 
 
 @router.post('/add_evaluation_book')
