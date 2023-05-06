@@ -1,0 +1,3 @@
+[submodule "fuzzy_search"]
+	path = fuzzy_search
+	url = https://github.com/InColumi/fuzzy_search.git
