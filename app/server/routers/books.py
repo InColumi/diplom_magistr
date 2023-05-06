@@ -14,12 +14,14 @@ router = APIRouter(tags=["books"])
 
 @router.post('/books', response_model=fastapi_pagination.Page[BookOut])
 def get_books(data: Annotated[dict, Depends(has_access)], is_favorites: bool = False, db: Session = Depends(get_db)):
-    print(is_favorites)
     user_id = data.get('user_id')
     if not user_id:
         raise Exception("Problem in '/books': Not user_id")
     books = crud_books.get_list(user_id=user_id, db=db, only_favorites=is_favorites)
     return fastapi_pagination.paginate(books)
+
+
+fastapi_pagination.add_pagination(router)
 
 
 @router.post('/change_status_favorite_book', status_code=200)
@@ -33,11 +35,11 @@ def change_status_favorite_book(data: Annotated[dict, Depends(has_access)], book
 
 @router.get('/send_audio_stream')
 def send_audio_stream(id_book: int):
-    id_book = 111
+    # id_book = 36
     file = f'{id_book}{settings.EXTENSIONS_SONGS}'
     path = os.path.join(settings.PATH_SONGS, file)
 
-    return FileResponse(path, media_type='audio/mp3')
+    return FileResponse(path, media_type='audio/mpeg')
 
 
 @router.post('/add_evaluation_book')
@@ -84,4 +86,3 @@ def get_text_book(data: Annotated[dict, Depends(has_access)], book: BookIn, db: 
 
 #     return {'hi': 'from test'}
 
-fastapi_pagination.add_pagination(router)

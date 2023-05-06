@@ -4,6 +4,9 @@ from sqlalchemy import select, func, Text, and_
 from models.books import Books
 from models.titles import Titles
 from models.authors import Authors
+from models.ner import Ner
+from models.cluster import Cluster
+from models.context import Context
 from models.book_authors import BookAuthors
 from models.bookshelves import Bookshelves
 from models.favorites import Favorites
@@ -11,7 +14,7 @@ from models.bool_users import BookUsers
 from sqlalchemy.dialects.postgresql import ARRAY
 from uuid import UUID
 from dependencies import settings
-
+from sqlalchemy import func, or_
 
 def get_list(db: Session, user_id: UUID, only_favorites: bool) -> list:
     authors_agg = func.array_agg(Authors.name, type_=ARRAY(Text)).label('authors')
@@ -100,3 +103,26 @@ def get_text(db: Session, book_id: UUID) -> list:
         raise Exception(f'Book with id: {book_id}, not exist in DB.')
     text = get_text_from_file(data.int_id)
     return split_text(text)
+
+def get_books_by_smart_search(db: Session, phrase: str, user_id: UUID):
+    authors_agg = func.array_agg(Authors.name, type_=ARRAY(Text)).label('authors')
+    title = Titles.name.ilike(f'%{phrase}%')
+    author = Authors.name.ilike(f'%{phrase}%')
+    q = select(
+        Books.id,
+        Books.dateissued,
+        Titles.name,
+        authors_agg,
+        Bookshelves.name.label('bookshelves_name'),
+        Books.int_id.label('path_to_image'),
+        Books.rating_avg,
+        (Favorites.ref_users == user_id).label('is_favorites')
+        )\
+        .join(Titles, Titles.int_book_id == Books.int_id)\
+        .join(Favorites, Favorites.ref_books == Books.id, isouter=True)\
+        .join(Bookshelves, Bookshelves.int_id == Books.bookshelves_id)\
+        .join(BookAuthors, BookAuthors.ref_book_id == Books.int_id)\
+        .join(Authors, BookAuthors.ref_authors_id == Authors.int_id)\
+        .filter(or_(title, author))
+    q = q.group_by(Books.id, Books.dateissued, Titles.name, Bookshelves.name, Books.int_id, Books.rating_avg, Favorites.ref_users)
+    return [i._asdict() for i in db.execute(q)]
