@@ -69,7 +69,7 @@ async def refresh(token: TokenRefresh):
 
 @router.post('/sign_in')
 async def sing_in(user: UserLogin,  db: Session = Depends(get_db)):
-    db_user = crud_users.get_user_by_username(db, user.username)
+    db_user = crud_users.get_user_by_email_or_username(db, user.username_or_email)
     if not db_user:
         raise HTTPException(status_code=400, detail="Incorrect username or password")
     if not verify_password(user.password, db_user.hashed_password):
