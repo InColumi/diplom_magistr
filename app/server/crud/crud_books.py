@@ -4,9 +4,6 @@ from sqlalchemy import select, func, Text, and_
 from models.books import Books
 from models.titles import Titles
 from models.authors import Authors
-from models.ner import Ner
-from models.cluster import Cluster
-from models.context import Context
 from models.book_authors import BookAuthors
 from models.bookshelves import Bookshelves
 from models.favorites import Favorites
@@ -14,11 +11,10 @@ from models.bool_users import BookUsers
 from sqlalchemy.dialects.postgresql import ARRAY
 from uuid import UUID
 from dependencies import settings
-from sqlalchemy import func, or_
+
 
 def get_list(db: Session, user_id: UUID, only_favorites: bool, title_filter: str = None, author_filter: str = None) -> list:
     authors_agg = func.array_agg(Authors.name, type_=ARRAY(Text)).label('authors')
-
     title = Titles.name.ilike(f"%{title_filter}%")
     author = Authors.name.ilike(f"%{author_filter}%")
     q = select(
@@ -37,7 +33,7 @@ def get_list(db: Session, user_id: UUID, only_favorites: bool, title_filter: str
         .join(Authors, BookAuthors.ref_authors_id == Authors.int_id)
     if title_filter:
         q = q.filter(title)
-    if author_filter: 
+    if author_filter:
         q = q.filter(author)
     q = q.group_by(Books.id, Books.dateissued, Titles.name, Bookshelves.name, Books.int_id, Books.rating_avg, Favorites.ref_users)\
         .order_by(Titles.name)

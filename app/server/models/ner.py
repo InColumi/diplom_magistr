@@ -1,6 +1,5 @@
 from sqlalchemy import Column, Uuid, Text, Integer, ForeignKeyConstraint
 from models.base import Base
-import uuid
 
 
 class Ner(Base):
@@ -23,4 +22,11 @@ class Ner(Base):
     )
 
     def __repr__(self) -> str:
-        return f"Titles(id={self.id}, name={self.name}, ref_book_id={self.ref_book_id}, int_id={self.int_id}, int_book_id={self.int_book_id})"
+        return f"Titles(id={self.id}, \
+            name={self.context_id}, \
+            ref_book_id={self.book_id}, \
+            int_id={self.cluster_id}, \
+            int_book_id={self.value},\
+            ref_book_id={self.start}, \
+            ref_book_id={self.end}, \
+            ref_book_id={self.type}, )"

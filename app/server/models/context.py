@@ -10,6 +10,5 @@ class Context(Base):
     start = Column(type_=Integer, nullable=False)
     end = Column(type_=Integer, nullable=False)
 
-
     def __repr__(self) -> str:
         return f"Claster(id={self.id}, word={self.word}, centroid={self.centroid}, size={self.size})"

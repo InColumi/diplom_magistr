@@ -84,4 +84,3 @@ def get_text_book(data: Annotated[dict, Depends(has_access)], book: BookIn, db: 
 #     from models.books import Books
 
 #     return {'hi': 'from test'}
-
