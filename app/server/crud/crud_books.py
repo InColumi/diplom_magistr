@@ -9,7 +9,6 @@ from models.bookshelves import Bookshelves
 from models.favorites import Favorites
 from models.book_users import BookUsers
 from sqlalchemy.dialects.postgresql import ARRAY
-from schemas.books import BookUsersProgress
 from uuid import UUID
 from dependencies import settings
 
@@ -56,8 +55,8 @@ def get_recommendation(db: Session, user_id: UUID, limit: int):
         .join(Titles, Titles.int_book_id == Books.int_id)\
         .join(Favorites, Favorites.ref_books == Books.id, isouter=True)\
         .join(Bookshelves, Bookshelves.int_id == Books.bookshelves_id)\
-        .join(BookAuthors, BookAuthors.ref_book_id == Books.int_id)\
-        .join(Authors, BookAuthors.ref_authors_id == Authors.int_id)\
+        .join(BookAuthors, BookAuthors.ref_book_id == Books.id)\
+        .join(Authors, BookAuthors.ref_authors_id == Authors.id)\
         .where(Favorites.ref_users != user_id)
     q = q.group_by(Books.id, Books.dateissued, Titles.name, Bookshelves.name, Books.int_id, Books.rating_avg, Favorites.ref_users)\
         .order_by(func.random()).limit(limit)\
@@ -85,9 +84,28 @@ def split_text(text: str) -> list:
     return [text_rows[i * split_size: (i + 1) * split_size] for i in range(count)]
 
 
+def join_pages(splited_text: list) -> list:
+    return ['\n'.join(page) for page in splited_text] 
+
+
 def get_text(db: Session, book_id: UUID) -> list:
     data = db.query(Books).where(Books.id == book_id).first()
     if not data:
         raise Exception(f'Book with id: {book_id}, not exist in DB.')
     text = get_text_from_file(data.int_id)
     return split_text(text)
+
+
+def get_last_reading(db: Session, user_id: UUID):
+    query = select(BookUsers.current_page, BookUsers.current_second, Books.total_pages, Books.int_id)\
+            .join(Books, Books.id == BookUsers.ref_books)\
+            .where(BookUsers.ref_users == user_id)\
+            .order_by(BookUsers.data_edit.desc()).limit(1)
+    item = [i._asdict() for i in db.execute(query)][0]
+    
+    text = get_text_from_file(item['int_id'])
+    splited_text = split_text(text)
+    pages = join_pages(splited_text)
+    item['text'] = pages[item['current_page']]
+    del item['int_id']
+    return item
