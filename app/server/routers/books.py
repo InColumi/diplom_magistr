@@ -72,6 +72,14 @@ def get_text_book(data: Annotated[dict, Depends(has_access)], book: BookIn, db: 
     return output
 
 
+@router.get('/last_reading')
+def get_last_reading_book(data: Annotated[dict, Depends(has_access)], db: Session = Depends(get_db)):
+    user_id = data.get('user_id')
+    if not user_id:
+        raise Exception("Problem in '/last_reading': Not user_id")
+    book = crud_books.get_last_reading(db, user_id)
+    return book
+
 # @router.post('/test')
 # def test(db: Session = Depends(get_db)):
 #     from models.books import Books
