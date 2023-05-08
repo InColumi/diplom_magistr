@@ -7,8 +7,9 @@ from models.authors import Authors
 from models.book_authors import BookAuthors
 from models.bookshelves import Bookshelves
 from models.favorites import Favorites
-from models.bool_users import BookUsers
+from models.book_users import BookUsers
 from sqlalchemy.dialects.postgresql import ARRAY
+from schemas.books import BookUsersProgress
 from uuid import UUID
 from dependencies import settings
 
@@ -29,8 +30,8 @@ def get_list(db: Session, user_id: UUID, only_favorites: bool, title_filter: str
         .join(Titles, Titles.int_book_id == Books.int_id)\
         .join(Favorites, and_(Favorites.ref_books == Books.id, Favorites.ref_users == user_id), isouter=not only_favorites)\
         .join(Bookshelves, Bookshelves.int_id == Books.bookshelves_id)\
-        .join(BookAuthors, BookAuthors.ref_book_id == Books.int_id)\
-        .join(Authors, BookAuthors.ref_authors_id == Authors.int_id)
+        .join(BookAuthors, BookAuthors.ref_book_id == Books.id)\
+        .join(Authors, BookAuthors.ref_authors_id == Authors.id)
     if title_filter:
         q = q.filter(title)
     if author_filter:
@@ -38,22 +39,6 @@ def get_list(db: Session, user_id: UUID, only_favorites: bool, title_filter: str
     q = q.group_by(Books.id, Books.dateissued, Titles.name, Bookshelves.name, Books.int_id, Books.rating_avg, Favorites.ref_users)\
         .order_by(Titles.name)
     return [i._asdict() for i in db.execute(q)]
-
-
-def add_evaluation(db: Session, user_id: UUID, book_id: UUID, value: int):
-    evaluation_db = db.query(BookUsers).where(BookUsers.ref_books == book_id, BookUsers.ref_users == user_id).first()
-    if not evaluation_db:
-        db.add(BookUsers(ref_books=book_id, ref_users=user_id, evaluation=value))
-    else:
-        evaluation_db.value = value
-
-
-def save_current_page(db: Session, user_id: UUID, book_id: UUID, current_page: int):
-    data = db.query(BookUsers).where(BookUsers.ref_books == book_id, BookUsers.ref_users == user_id).first()
-    if not data:
-        db.add(BookUsers(ref_books=book_id, ref_users=user_id, current_page=current_page))
-    else:
-        data.current_page = current_page
 
 
 def get_recommendation(db: Session, user_id: UUID, limit: int):
@@ -65,7 +50,7 @@ def get_recommendation(db: Session, user_id: UUID, limit: int):
         authors_agg,
         Bookshelves.name.label('bookshelves_name'),
         Books.int_id.label('path_to_image'),
-        Books.rating_avg,
+        func.round(Books.rating_avg).label('rating_avg'),
         (Favorites.ref_users == user_id).label('is_favorites')
         )\
         .join(Titles, Titles.int_book_id == Books.int_id)\
