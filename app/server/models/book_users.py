@@ -7,7 +7,7 @@ class BookUsers(Base):
 
     ref_users = Column(type_=Uuid, primary_key=True, nullable=False)
     ref_books = Column(type_=Uuid, primary_key=True, nullable=False)
-    current_page = Column(type_=Integer, nullable=False, default=0, server_default='0')
+    current_page = Column(type_=Integer, nullable=False, default=1, server_default='1')
     current_second = Column(type_=Integer, nullable=False, default=0, server_default='0')
     data_edit = Column(type_=DateTime, nullable=False, default=datetime.now(), server_default='now()')
     evaluation = Column(type_=Integer)
