@@ -26,7 +26,7 @@ def get_list(db: Session, user_id: UUID, only_favorites: bool, title_filter: str
         Books.int_id.label('path_to_image'),
         Books.rating_avg,
         (Favorites.ref_users == user_id).label('is_favorites'))\
-        .join(Titles, Titles.int_book_id == Books.int_id)\
+        .join(Titles, Titles.ref_book_id == Books.id)\
         .join(Favorites, and_(Favorites.ref_books == Books.id, Favorites.ref_users == user_id), isouter=not only_favorites)\
         .join(Bookshelves, Bookshelves.int_id == Books.bookshelves_id)\
         .join(BookAuthors, BookAuthors.ref_book_id == Books.id)\
@@ -84,16 +84,17 @@ def split_text(text: str) -> list:
     return [text_rows[i * split_size: (i + 1) * split_size] for i in range(count)]
 
 
-def join_pages(splited_text: list) -> list:
-    return ['\n'.join(page) for page in splited_text] 
-
+def get_text_pages(id_text: int):
+    text = get_text_from_file(id_text)
+    splited_text = split_text(text)
+    return ['\n'.join(page) for page in splited_text]
+    
 
 def get_text(db: Session, book_id: UUID) -> list:
     data = db.query(Books).where(Books.id == book_id).first()
     if not data:
         raise Exception(f'Book with id: {book_id}, not exist in DB.')
-    text = get_text_from_file(data.int_id)
-    return split_text(text)
+    return get_text_pages(data.int_id)
 
 
 def get_last_reading(db: Session, user_id: UUID):
@@ -118,9 +119,7 @@ def get_last_reading(db: Session, user_id: UUID):
             .order_by(BookUsers.data_edit.desc()).limit(1)
     item = [i._asdict() for i in db.execute(query)][0]
     
-    text = get_text_from_file(item['int_id'])
-    splited_text = split_text(text)
-    pages = join_pages(splited_text)
+    pages = get_text_pages(item['int_id'])
     item['text'] = pages[item['current_page']]
     del item['int_id']
     return item
