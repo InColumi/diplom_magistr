@@ -34,21 +34,23 @@ class BookOut(BaseModel):
     id: UUID
 
 
-class BookUsersCurrentPage(BaseModel):
+class BookUsersProgress(BaseModel):
     id: UUID
-    current_page: int
+    current_page: Optional[int]
+    current_second: Optional[int]
+    evaluation: Optional[int]
 
     @validator('current_page')
     def current_page_must_be_positive(cls, value):
-        assert value >= 0, 'value must be >= 0'
+        assert value >= 0, 'current_page must be >= 0'
         return value
 
-
-class BookUsersEvaluation(BaseModel):
-    id: UUID
-    value: int
-
-    @validator('value')
-    def value_must_be_between_1_5(cls, value):
-        assert value >= 1 and value <= 5, 'value must be in interval (1, 5)'
+    @validator('current_second')
+    def current_second_must_be_positive(cls, value):
+        assert value >= 0, 'current_second must be >= 0'
+        return value
+    
+    @validator('evaluation')
+    def evaluation_must_be_between_1_5(cls, value):
+        assert value >= 1 and value <= 5, 'evaluation must be in interval (1, 5)'
         return value
