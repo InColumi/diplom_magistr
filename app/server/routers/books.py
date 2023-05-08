@@ -22,9 +22,6 @@ def get_books(data: Annotated[dict, Depends(has_access)], input: BookFilters, is
     return fastapi_pagination.paginate(books)
 
 
-fastapi_pagination.add_pagination(router)
-
-
 @router.post('/change_status_favorite_book', status_code=200)
 def change_status_favorite_book(data: Annotated[dict, Depends(has_access)], book: BookIn, db: Session = Depends(get_db)):
     user_id = data.get('user_id')
@@ -60,16 +57,13 @@ def get_recomendation(data: Annotated[dict, Depends(has_access)], limit: Optiona
     return output
 
 
-@router.post('/get_text')
+@router.post('/get_text', response_model=fastapi_pagination.Page[str])
 def get_text_book(data: Annotated[dict, Depends(has_access)], book: BookIn, db: Session = Depends(get_db)):
     user_id = data.get('user_id')
     if not user_id:
         raise Exception("Problem in '/get_text': Not user_id")
     items = crud_books.get_text(db, book.id)
-    output = {}
-    output['items'] = items
-    output['total_pages'] = len(items)
-    return output
+    return fastapi_pagination.paginate(items)
 
 
 @router.get('/last_reading')
@@ -79,6 +73,8 @@ def get_last_reading_book(data: Annotated[dict, Depends(has_access)], db: Sessio
         raise Exception("Problem in '/last_reading': Not user_id")
     book = crud_books.get_last_reading(db, user_id)
     return book
+
+fastapi_pagination.add_pagination(router)
 
 # @router.post('/test')
 # def test(db: Session = Depends(get_db)):
