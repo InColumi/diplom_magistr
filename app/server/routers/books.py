@@ -2,10 +2,11 @@ import os
 import fastapi_pagination
 from crud import crud_books
 from crud import crud_favorites
+from crud import crud_book_users
 from typing import Annotated, Optional
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
-from schemas.books import BookOut, BookIn, BookUsersCurrentPage, BookUsersEvaluation, BookFilters
+from schemas.books import BookOut, BookIn, BookUsersProgress, BookFilters
 from fastapi.responses import FileResponse
 from dependencies import get_db, settings, has_access
 
@@ -41,20 +42,12 @@ def send_audio_stream(id_book: int):
     return FileResponse(path, headers=headers)
 
 
-@router.post('/add_evaluation_book')
-def add_evaluation_book(data: Annotated[dict, Depends(has_access)], book: BookUsersEvaluation, db: Session = Depends(get_db)):
+@router.post('/save_progress_book')
+def save_progress_book(data: Annotated[dict, Depends(has_access)], book: BookUsersProgress, db: Session = Depends(get_db)):
     user_id = data.get('user_id')
     if not user_id:
         raise Exception("Problem in '/add_evaluation_book': Not user_id")
-    crud_books.add_evaluation(db, user_id, book.id, book.value)
-
-
-@router.post('/save_current_page')
-def save_current_book_page(data: Annotated[dict, Depends(has_access)], book: BookUsersCurrentPage, db: Session = Depends(get_db)):
-    user_id = data.get('user_id')
-    if not user_id:
-        raise Exception("Problem in '/save_current_page': Not user_id")
-    crud_books.save_current_page(db, user_id, book.id, book.current_page)
+    crud_book_users.update(db, user_id, book)
 
 
 @router.post('/get_recomendation')
