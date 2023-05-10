@@ -104,7 +104,8 @@ def get_last_reading(db: Session, user_id: UUID):
                 Books.total_pages, 
                 Titles.name.label('title'),
                 authors_agg,
-                Books.int_id)\
+                Books.id,
+                Books.int_id.label('id_text'))\
             .join(BookAuthors, BookAuthors.ref_book_id == BookUsers.ref_books)\
             .join(Authors, Authors.id == BookAuthors.ref_authors_id)\
             .join(Books, Books.id == BookUsers.ref_books)\
@@ -115,11 +116,23 @@ def get_last_reading(db: Session, user_id: UUID):
                 Books.total_pages, 
                 Titles.name,
                 Books.int_id, 
+                Books.id,
                 BookUsers.data_edit)\
             .order_by(BookUsers.data_edit.desc()).limit(1)
     item = [i._asdict() for i in db.execute(query)][0]
     
-    pages = get_text_pages(item['int_id'])
+    pages = get_text_pages(item['id_text'])
     item['text'] = pages[item['current_page']]
-    del item['int_id']
     return item
+
+
+def get_book_info_by_id_user(db: Session, book_id: UUID, user_id: UUID) -> dict:
+    authors_agg = func.array_agg(Authors.name, type_=ARRAY(Text)).label('authors')
+    query = select(Books.total_pages, Titles.name.label('title'), BookUsers.current_page, authors_agg)\
+            .join(Books, Books.id == BookUsers.ref_books)\
+            .join(BookAuthors, BookAuthors.ref_book_id == Books.id)\
+            .join(Authors, Authors.id == BookAuthors.ref_authors_id)\
+            .join(Titles, Titles.ref_book_id == Books.id)\
+            .where(Books.id == book_id, BookUsers.ref_users == user_id)\
+            .group_by(Books.total_pages, BookUsers.current_page, Titles.name)
+    return [i._asdict() for i in db.execute(query)][0]
