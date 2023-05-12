@@ -18,7 +18,7 @@ def get_books(data: Annotated[dict, Depends(has_access)], input: BookFilters, is
     user_id = data.get('user_id')
     if not user_id:
         raise Exception("Problem in '/books': Not user_id")
-    books = crud_books.get_list(user_id=user_id, db=db, only_favorites=is_favorites, title_filter=input.title, author_filter=input.author)
+    books = crud_books.get_list(user_id=user_id, db=db, only_favorites=is_favorites, filter=input)
     return fastapi_pagination.paginate(books)
 
 
@@ -52,10 +52,8 @@ def get_recommendation(data: Annotated[dict, Depends(has_access)], limit: Option
     user_id = data.get('user_id')
     if not user_id:
         raise Exception("Problem in '/get_recommendation': Not user_id")
-    # calc_recommendation(db)
-    output = {}
-    output['books'] = crud_books.get_recommendation(db, user_id, limit)
-    return output
+    id_books = calc_recommendation(db, user_id)
+    return crud_books.get_books_by_id_for_recommendation(db, id_books)
 
 
 @router.post('/get_text')
@@ -79,11 +77,9 @@ def get_last_reading_book(data: Annotated[dict, Depends(has_access)], db: Sessio
 fastapi_pagination.add_pagination(router)
 
 @router.post('/test')
-def test(data: Annotated[dict, Depends(has_access)], limit: Optional[int] = 10, db: Session = Depends(get_db)):
+def test(data: Annotated[dict, Depends(has_access)], db: Session = Depends(get_db)):
     user_id = data.get('user_id')
     if not user_id:
         raise Exception("Problem in '/get_recommendation': Not user_id")
-    calc_recommendation(db)
-    # output = {}
-    # output['books'] = crud_books.get_recommendation(db, user_id, limit)
-    # return output
+    id_books = calc_recommendation(db, user_id)
+    return crud_books.get_books_by_id_for_recommendation(db, id_books)
