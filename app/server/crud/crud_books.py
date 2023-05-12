@@ -1,6 +1,6 @@
 import os
 from sqlalchemy.orm import Session
-from sqlalchemy import select, func, Text, and_
+from sqlalchemy import select, func, Text, and_, or_, any_
 from models.books import Books
 from models.titles import Titles
 from models.authors import Authors
@@ -8,15 +8,18 @@ from models.book_authors import BookAuthors
 from models.bookshelves import Bookshelves
 from models.favorites import Favorites
 from models.book_users import BookUsers
+from schemas.books import BookFilters
 from sqlalchemy.dialects.postgresql import ARRAY
 from uuid import UUID
 from dependencies import settings
 
 
-def get_list(db: Session, user_id: UUID, only_favorites: bool, title_filter: str = None, author_filter: str = None) -> list:
+def get_list(db: Session, user_id: UUID, only_favorites: bool, filter: BookFilters = None) -> list:
     authors_agg = func.array_agg(Authors.name, type_=ARRAY(Text)).label('authors')
-    title = Titles.name.ilike(f"%{title_filter}%")
-    author = Authors.name.ilike(f"%{author_filter}%")
+    print(filter)
+    title = Titles.name.ilike(f"%{filter.value}%")
+    author = Authors.name.ilike(f"%{filter.value}%")
+    print(only_favorites)
     q = select(
         Books.id,
         Books.dateissued,
@@ -31,12 +34,24 @@ def get_list(db: Session, user_id: UUID, only_favorites: bool, title_filter: str
         .join(Bookshelves, Bookshelves.int_id == Books.bookshelves_id)\
         .join(BookAuthors, BookAuthors.ref_book_id == Books.id)\
         .join(Authors, BookAuthors.ref_authors_id == Authors.id)
-    if title_filter:
-        q = q.filter(title)
-    if author_filter:
-        q = q.filter(author)
-    q = q.group_by(Books.id, Books.dateissued, Titles.name, Bookshelves.name, Books.int_id, Books.rating_avg, Favorites.ref_users)\
-        .order_by(Titles.name)
+    if filter.value:
+        q = q.filter(or_(title, author))
+    q = q.group_by(Books.id, Books.dateissued, Titles.name, Bookshelves.name, Books.int_id, Books.rating_avg, Favorites.ref_users)
+    type_of_filter = filter.type_of_filter
+    # if type_of_filter == 0:
+    #     q = q.order_by(Titles.name)
+    # if type_of_filter == 1:
+    #     q = q.order_by(Titles.name.desc())
+    # if type_of_filter == 2:
+    #     q = q.order_by(Books.rating_avg)
+    # if type_of_filter == 3:
+    #     q = q.order_by(Books.rating_avg.desc())
+    # if type_of_filter == 4:
+    #     q = q.order_by(Books.dateissued)
+    # if type_of_filter == 5:
+    #     q = q.order_by(Books.dateissued.desc())
+    # if type_of_filter == 6:
+    #     q = q.order_by(Titles.name.desc())
     return [i._asdict() for i in db.execute(q)]
 
 
@@ -60,7 +75,29 @@ def get_recommendation(db: Session, user_id: UUID, limit: int):
         .where(Favorites.ref_users != user_id)
     q = q.group_by(Books.id, Books.dateissued, Titles.name, Bookshelves.name, Books.int_id, Books.rating_avg, Favorites.ref_users)\
         .order_by(func.random()).limit(limit)\
-        .limit(settings.COUNT_BOOKS_IN_RECOMENDATION)
+        .limit()
+    return [i._asdict() for i in db.execute(q)]
+
+
+def get_books_by_id_for_recommendation(db: Session, id_list: list) -> list:
+    authors_agg = func.array_agg(Authors.name, type_=ARRAY(Text)).label('authors')
+    q = select(
+        Books.id,
+        Books.dateissued,
+        Titles.name,
+        authors_agg,
+        Bookshelves.name.label('bookshelves_name'),
+        Books.int_id.label('path_to_image'),
+        func.round(Books.rating_avg).label('rating_avg')
+        )\
+        .join(Titles, Titles.ref_book_id == Books.id)\
+        .join(Bookshelves, Bookshelves.int_id == Books.bookshelves_id)\
+        .join(BookAuthors, BookAuthors.ref_book_id == Books.id)\
+        .join(Authors, BookAuthors.ref_authors_id == Authors.id)\
+        .where(Books.id == any_(id_list))\
+        .group_by(Books.id, Books.dateissued, Titles.name, Bookshelves.name, Books.int_id, Books.rating_avg)\
+        .order_by(func.random())
+    print(q)
     return [i._asdict() for i in db.execute(q)]
 
 
