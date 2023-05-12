@@ -15,8 +15,13 @@ class BookIn(BaseModel):
 
 
 class BookFilters(BaseModel):
-    author: Optional[str]
-    title: Optional[str]
+    value: Optional[str]
+    type_of_filter: Optional[list]
+
+    # @validator('type_of_filter')
+    # def type_of_filter_(cls, value):
+    #     assert value >= 0 and value <= 3, 'current_page must be >= 0 and <= 3'
+    #     return value
 
 
 class LimitPages(BaseModel):
