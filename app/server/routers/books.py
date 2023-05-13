@@ -52,7 +52,8 @@ def get_recommendation(data: Annotated[dict, Depends(has_access)], limit: Option
     user_id = data.get('user_id')
     if not user_id:
         raise Exception("Problem in '/get_recommendation': Not user_id")
-    id_books = calc_recommendation(db, user_id)
+    # id_books = calc_recommendation(db, user_id)
+    return crud_books.get_recommendation(db, user_id, limit)
     return crud_books.get_books_by_id_for_recommendation(db, id_books)
 
 
@@ -82,4 +83,5 @@ def test(data: Annotated[dict, Depends(has_access)], db: Session = Depends(get_d
     if not user_id:
         raise Exception("Problem in '/get_recommendation': Not user_id")
     id_books = calc_recommendation(db, user_id)
-    return crud_books.get_books_by_id_for_recommendation(db, id_books)
+    # return crud_books.get_books_by_id_for_recommendation(db, id_books)
+    return id_books
