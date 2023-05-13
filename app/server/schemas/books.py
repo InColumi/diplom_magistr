@@ -16,7 +16,7 @@ class BookIn(BaseModel):
 
 class BookFilters(BaseModel):
     value: Optional[str]
-    type_of_filter: Optional[list]
+    sort: Optional[str]
 
     # @validator('type_of_filter')
     # def type_of_filter_(cls, value):
@@ -34,6 +34,7 @@ class BookOut(BaseModel):
     authors: list
     bookshelves_name: str
     path_to_image: int
+    id_text: int
     rating_avg: int
     is_favorites: Optional[bool] = None
     id: UUID
