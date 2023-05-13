@@ -32,12 +32,13 @@ class BookOut(BaseModel):
     dateissued: date
     name: str
     authors: list
-    bookshelves_name: str
     path_to_image: int
     id_text: int
     rating_avg: int
-    is_favorites: Optional[bool] = None
+    is_favorites: Optional[bool]
     id: UUID
+    current_page: Optional[int]
+    current_second: Optional[int]
 
 
 class BookUsersProgress(BaseModel):

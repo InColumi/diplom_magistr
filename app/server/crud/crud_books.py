@@ -25,19 +25,22 @@ def get_list(db: Session, user_id: UUID, only_favorites: bool, filter: BookFilte
         Books.dateissued,
         Titles.name,
         authors_agg,
-        Bookshelves.name.label('bookshelves_name'),
         Books.int_id.label('path_to_image'),
         Books.int_id.label('id_text'),
         Books.rating_avg,
+        BookUsers.current_page,
+        BookUsers.current_second,
         (Favorites.ref_users == user_id).label('is_favorites'))\
         .join(Titles, Titles.ref_book_id == Books.id)\
         .join(Favorites, and_(Favorites.ref_books == Books.id, Favorites.ref_users == user_id), isouter=not only_favorites)\
         .join(Bookshelves, Bookshelves.int_id == Books.bookshelves_id)\
         .join(BookAuthors, BookAuthors.ref_book_id == Books.id)\
-        .join(Authors, BookAuthors.ref_authors_id == Authors.id)
+        .join(Authors, BookAuthors.ref_authors_id == Authors.id)\
+        .join(BookUsers, and_(BookUsers.ref_books == Books.id, BookUsers.ref_users == user_id), isouter=True)
     if filter.value:
         q = q.filter(or_(title, author))
-    q = q.group_by(Books.id, Books.dateissued, Titles.name, Bookshelves.name, Books.int_id, Books.rating_avg, Favorites.ref_users)
+    q = q.group_by(Books.id, Books.dateissued, Titles.name, Books.int_id, Books.rating_avg, Favorites.ref_users,
+                    BookUsers.current_page, BookUsers.current_second)
     sort = filter.sort
     if sort == 0:
         q = q.order_by(Authors.name)
