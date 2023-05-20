@@ -28,4 +28,4 @@ class Settings(BaseSettings):
     PORT: int
 
     class Config:
-        env_file = 'app\server\.env'
+        env_file = '.env'
