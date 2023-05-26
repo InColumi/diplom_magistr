@@ -54,7 +54,6 @@ def get_recommendation(data: Annotated[dict, Depends(has_access)], limit: Option
         raise Exception("Problem in '/get_recommendation': Not user_id")
     # id_books = calc_recommendation(db, user_id)
     return crud_books.get_recommendation(db, user_id, limit)
-    return crud_books.get_books_by_id_for_recommendation(db, id_books)
 
 
 @router.post('/get_text')
@@ -75,7 +74,9 @@ def get_last_reading_book(data: Annotated[dict, Depends(has_access)], db: Sessio
     book = crud_books.get_last_reading(db, user_id)
     return book
 
+
 fastapi_pagination.add_pagination(router)
+
 
 @router.post('/test')
 def test(data: Annotated[dict, Depends(has_access)], db: Session = Depends(get_db)):

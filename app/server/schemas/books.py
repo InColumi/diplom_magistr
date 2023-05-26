@@ -56,7 +56,7 @@ class BookUsersProgress(BaseModel):
     def current_second_must_be_positive(cls, value):
         assert value >= 0, 'current_second must be >= 0'
         return value
-    
+
     @validator('evaluation')
     def evaluation_must_be_between_1_5(cls, value):
         assert value >= 1 and value <= 5, 'evaluation must be in interval (1, 5)'

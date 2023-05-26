@@ -4,7 +4,8 @@ from schemas.books import BookUsersProgress
 from uuid import UUID
 from datetime import datetime
 
-def update_template(item: BookUsers, source :BookUsersProgress):
+
+def update_template(item: BookUsers, source: BookUsersProgress):
     if source.current_page:
         item.current_page = source.current_page
     if source.current_second:
@@ -14,7 +15,7 @@ def update_template(item: BookUsers, source :BookUsersProgress):
     item.data_edit = datetime.now()
 
 
-def update(db: Session, user_id: UUID, book :BookUsersProgress):
+def update(db: Session, user_id: UUID, book: BookUsersProgress):
     data = db.query(BookUsers).where(BookUsers.ref_books == book.id, BookUsers.ref_users == user_id).first()
     if not data:
         new_data = BookUsers(ref_books=book.id, ref_users=user_id)

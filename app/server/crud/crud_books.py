@@ -40,7 +40,7 @@ def get_list(db: Session, user_id: UUID, only_favorites: bool, filter: BookFilte
     if filter.value:
         q = q.filter(or_(title, author))
     q = q.group_by(Books.id, Books.dateissued, Titles.name, Books.int_id, Books.rating_avg, Favorites.ref_users,
-                    BookUsers.current_page, BookUsers.current_second)
+                   BookUsers.current_page, BookUsers.current_second)
     sort = filter.sort
     if sort == 0:
         q = q.order_by(Authors.name)
@@ -130,7 +130,7 @@ def get_text_pages(id_text: int):
     text = get_text_from_file(id_text)
     splited_text = split_text(text)
     return ['\n'.join(page) for page in splited_text]
-    
+
 
 def get_text(db: Session, book_id: UUID) -> list:
     data = db.query(Books).where(Books.id == book_id).first()
@@ -141,28 +141,28 @@ def get_text(db: Session, book_id: UUID) -> list:
 
 def get_last_reading(db: Session, user_id: UUID):
     authors_agg = func.array_agg(Authors.name, type_=ARRAY(Text)).label('authors')
-    query = select(BookUsers.current_page, 
-                BookUsers.current_second, 
-                Books.total_pages, 
-                Titles.name.label('title'),
-                authors_agg,
-                Books.id,
-                Books.int_id.label('id_text'))\
-            .join(BookAuthors, BookAuthors.ref_book_id == BookUsers.ref_books)\
-            .join(Authors, Authors.id == BookAuthors.ref_authors_id)\
-            .join(Books, Books.id == BookUsers.ref_books)\
-            .join(Titles, Titles.ref_book_id == Books.id)\
-            .where(BookUsers.ref_users == user_id)\
-            .group_by(BookUsers.current_page, 
-                BookUsers.current_second, 
-                Books.total_pages, 
-                Titles.name,
-                Books.int_id, 
-                Books.id,
-                BookUsers.data_edit)\
+    query = select(BookUsers.current_page,
+                   BookUsers.current_second,
+                   Books.total_pages,
+                   Titles.name.label('title'),
+                   authors_agg,
+                   Books.id,
+                   Books.int_id.label('id_text'))\
+        .join(BookAuthors, BookAuthors.ref_book_id == BookUsers.ref_books)\
+        .join(Authors, Authors.id == BookAuthors.ref_authors_id)\
+        .join(Books, Books.id == BookUsers.ref_books)\
+        .join(Titles, Titles.ref_book_id == Books.id)\
+        .where(BookUsers.ref_users == user_id)\
+        .group_by(BookUsers.current_page,
+                        BookUsers.current_second,
+                        Books.total_pages,
+                        Titles.name,
+                        Books.int_id,
+                        Books.id,
+                        BookUsers.data_edit)\
             .order_by(BookUsers.data_edit.desc()).limit(1)
     item = [i._asdict() for i in db.execute(query)][0]
-    
+
     pages = get_text_pages(item['id_text'])
     item['text'] = pages[item['current_page']]
     return item

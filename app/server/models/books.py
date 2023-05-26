@@ -13,7 +13,6 @@ class Books(Base):
     rating_avg = Column(type_=Integer, nullable=False, default=0)
     total_pages = Column(type_=Integer, nullable=False)
     rating_quantity = Column(type_=Integer, nullable=False)
-    
 
     def __repr__(self) -> str:
         return f"Books(id={self.id}, \

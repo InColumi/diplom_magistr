@@ -2,6 +2,7 @@ from sqlalchemy import Column, Uuid, Integer, ForeignKeyConstraint, DateTime
 from models.base import Base
 from datetime import datetime
 
+
 class BookUsers(Base):
     __tablename__ = "book_users"
 
