@@ -57,7 +57,6 @@ def get_user_me(user: Annotated[UserOut, Depends(get_active_current_user)]):
 
 @router.post('/refresh_token')
 async def refresh(token: TokenRefresh):
-    print(token)
     try:
         data = jwt.decode(token.refresh_token, settings.REFERSH_TOKEN_KEY)
         new_access_token = create_access_token(data)
