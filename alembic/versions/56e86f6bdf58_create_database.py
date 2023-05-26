@@ -28,7 +28,7 @@ def upgrade() -> None:
                     Column(name='rating_avg', type_=Numeric, nullable=False),
                     Column(name='total_pages', type_=Integer, nullable=False),
                     Column(name='rating_quantity', type_=Integer, nullable=False))
-                    
+
     op.create_table('users',
                     Column(name='id', type_=Uuid, primary_key=True, default=uuid.uuid4()),
                     Column(name='email', type_=Text, unique=True, nullable=False),
