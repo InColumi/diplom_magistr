@@ -15,8 +15,13 @@ class BookIn(BaseModel):
 
 
 class BookFilters(BaseModel):
-    author: Optional[str]
-    title: Optional[str]
+    value: Optional[str]
+    sort: Optional[str]
+
+    # @validator('type_of_filter')
+    # def type_of_filter_(cls, value):
+    #     assert value >= 0 and value <= 3, 'current_page must be >= 0 and <= 3'
+    #     return value
 
 
 class LimitPages(BaseModel):
@@ -27,28 +32,32 @@ class BookOut(BaseModel):
     dateissued: date
     name: str
     authors: list
-    bookshelves_name: str
     path_to_image: int
+    id_text: int
     rating_avg: int
-    is_favorites: Optional[bool] = None
+    is_favorites: Optional[bool]
     id: UUID
+    current_page: Optional[int]
+    current_second: Optional[int]
 
 
-class BookUsersCurrentPage(BaseModel):
+class BookUsersProgress(BaseModel):
     id: UUID
-    current_page: int
+    current_page: Optional[int]
+    current_second: Optional[int]
+    evaluation: Optional[int]
 
     @validator('current_page')
     def current_page_must_be_positive(cls, value):
-        assert value >= 0, 'value must be >= 0'
+        assert value >= 0, 'current_page must be >= 0'
         return value
 
+    @validator('current_second')
+    def current_second_must_be_positive(cls, value):
+        assert value >= 0, 'current_second must be >= 0'
+        return value
 
-class BookUsersEvaluation(BaseModel):
-    id: UUID
-    value: int
-
-    @validator('value')
-    def value_must_be_between_1_5(cls, value):
-        assert value >= 1 and value <= 5, 'value must be in interval (1, 5)'
+    @validator('evaluation')
+    def evaluation_must_be_between_1_5(cls, value):
+        assert value >= 1 and value <= 5, 'evaluation must be in interval (1, 5)'
         return value

@@ -14,4 +14,4 @@ def get_top_authors(data: Annotated[dict, Depends(has_access)], count: Optional[
     user_id = data.get('user_id')
     if not user_id:
         raise Exception("Problem in '/get_top_authors': Not user_id")
-    return crud_authors.get_top_by_rating(db, count)
+    return crud_authors.get_top_by_readers(db, count)

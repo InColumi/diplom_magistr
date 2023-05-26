@@ -2,13 +2,14 @@ import os
 import fastapi_pagination
 from crud import crud_books
 from crud import crud_favorites
+from crud import crud_book_users
 from typing import Annotated, Optional
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
-from schemas.books import BookOut, BookIn, BookUsersCurrentPage, BookUsersEvaluation, BookFilters
+from schemas.books import BookOut, BookIn, BookUsersProgress, BookFilters
 from fastapi.responses import FileResponse
 from dependencies import get_db, settings, has_access
-
+from recommendation_system.model import calc_recommendation
 router = APIRouter(tags=["books"])
 
 
@@ -17,11 +18,8 @@ def get_books(data: Annotated[dict, Depends(has_access)], input: BookFilters, is
     user_id = data.get('user_id')
     if not user_id:
         raise Exception("Problem in '/books': Not user_id")
-    books = crud_books.get_list(user_id=user_id, db=db, only_favorites=is_favorites, title_filter=input.title, author_filter=input.author)
+    books = crud_books.get_list(user_id=user_id, db=db, only_favorites=is_favorites, filter=input)
     return fastapi_pagination.paginate(books)
-
-
-fastapi_pagination.add_pagination(router)
 
 
 @router.post('/change_status_favorite_book', status_code=200)
@@ -41,30 +39,21 @@ def send_audio_stream(id_book: int):
     return FileResponse(path, headers=headers)
 
 
-@router.post('/add_evaluation_book')
-def add_evaluation_book(data: Annotated[dict, Depends(has_access)], book: BookUsersEvaluation, db: Session = Depends(get_db)):
+@router.post('/save_progress_book')
+def save_progress_book(data: Annotated[dict, Depends(has_access)], book: BookUsersProgress, db: Session = Depends(get_db)):
     user_id = data.get('user_id')
     if not user_id:
         raise Exception("Problem in '/add_evaluation_book': Not user_id")
-    crud_books.add_evaluation(db, user_id, book.id, book.value)
+    crud_book_users.update(db, user_id, book)
 
 
-@router.post('/save_current_page')
-def save_current_book_page(data: Annotated[dict, Depends(has_access)], book: BookUsersCurrentPage, db: Session = Depends(get_db)):
+@router.post('/get_recommendation')
+def get_recommendation(data: Annotated[dict, Depends(has_access)], limit: Optional[int] = 10, db: Session = Depends(get_db)):
     user_id = data.get('user_id')
     if not user_id:
-        raise Exception("Problem in '/save_current_page': Not user_id")
-    crud_books.save_current_page(db, user_id, book.id, book.current_page)
-
-
-@router.post('/get_recomendation')
-def get_recomendation(data: Annotated[dict, Depends(has_access)], limit: Optional[int] = 10, db: Session = Depends(get_db)):
-    user_id = data.get('user_id')
-    if not user_id:
-        raise Exception("Problem in '/get_recomendation': Not user_id")
-    output = {}
-    output['books'] = crud_books.get_recommendation(db, user_id, limit)
-    return output
+        raise Exception("Problem in '/get_recommendation': Not user_id")
+    # id_books = calc_recommendation(db, user_id)
+    return crud_books.get_recommendation(db, user_id, limit)
 
 
 @router.post('/get_text')
@@ -72,15 +61,28 @@ def get_text_book(data: Annotated[dict, Depends(has_access)], book: BookIn, db: 
     user_id = data.get('user_id')
     if not user_id:
         raise Exception("Problem in '/get_text': Not user_id")
-    items = crud_books.get_text(db, book.id)
-    output = {}
-    output['items'] = items
-    output['total_pages'] = len(items)
+    output = crud_books.get_book_info_by_id_user(db, book.id, user_id)
+    output['pages'] = crud_books.get_text(db, book.id)
     return output
 
 
-# @router.post('/test')
-# def test(db: Session = Depends(get_db)):
-#     from models.books import Books
+@router.get('/last_reading')
+def get_last_reading_book(data: Annotated[dict, Depends(has_access)], db: Session = Depends(get_db)):
+    user_id = data.get('user_id')
+    if not user_id:
+        raise Exception("Problem in '/last_reading': Not user_id")
+    book = crud_books.get_last_reading(db, user_id)
+    return book
 
-#     return {'hi': 'from test'}
+
+fastapi_pagination.add_pagination(router)
+
+
+@router.post('/test')
+def test(data: Annotated[dict, Depends(has_access)], db: Session = Depends(get_db)):
+    user_id = data.get('user_id')
+    if not user_id:
+        raise Exception("Problem in '/get_recommendation': Not user_id")
+    id_books = calc_recommendation(db, user_id)
+    # return crud_books.get_books_by_id_for_recommendation(db, id_books)
+    return id_books
