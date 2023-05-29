@@ -178,3 +178,8 @@ def get_book_info_by_id_user(db: Session, book_id: UUID, user_id: UUID) -> dict:
             .where(Books.id == book_id, BookUsers.ref_users == user_id)\
             .group_by(Books.total_pages, BookUsers.current_page, Titles.name)
     return [i._asdict() for i in db.execute(query)][0]
+
+
+def get_books_uuid_by_int(db: Session, list_int: list) -> list:
+    data = db.query(Books.id).where(Books.int_id == any_(list_int)).all()
+    return [i[0] for i in data]
