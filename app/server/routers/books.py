@@ -10,6 +10,7 @@ from schemas.books import BookOut, BookIn, BookUsersProgress, BookFilters
 from fastapi.responses import FileResponse
 from dependencies import get_db, settings, has_access
 from recommendation_system.model import calc_recommendation
+from smart_search.model import get_books_id_by_smart_search
 router = APIRouter(tags=["books"])
 
 
@@ -86,3 +87,10 @@ def test(data: Annotated[dict, Depends(has_access)], db: Session = Depends(get_d
     id_books = calc_recommendation(db, user_id)
     # return crud_books.get_books_by_id_for_recommendation(db, id_books)
     return id_books
+
+
+@router.post('/search')
+def search(query: str, db: Session = Depends(get_db)):
+    books_id_int = get_books_id_by_smart_search(db, query)
+    books_id_uuid = crud_books.get_books_uuid_by_int(db, books_id_int)
+    return crud_books.get_books_by_id_for_recommendation(db, books_id_uuid)
