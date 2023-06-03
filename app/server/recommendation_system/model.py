@@ -68,7 +68,7 @@ def draw_movies_heatmap(most_rated_movies_users_selection, axis_labels=False):
     cbar.ax.set_yticklabels(['5 stars', '4 stars','3 stars','2 stars','1 stars','0 stars'])
     plt.show()
 
-def get_first_rec(db: Session, limit: int = 10):
+def get_1_rec(db: Session, limit: int = 10):
     import seaborn as sns
     data_db = db.query(Books.rating_avg, func.array_agg(Authors.name).label('title'))\
                 .join(BookAuthors, BookAuthors.ref_book_id == Books.id)\
@@ -76,7 +76,7 @@ def get_first_rec(db: Session, limit: int = 10):
                 .group_by(Books.rating_avg)\
                 .order_by(Books.rating_avg.desc()).limit(limit)
     data = pd.DataFrame(data_db)
-    print(data.head())
+    # print(data.head())
     data['title'] = [i[0] for i in data['title']]
 
     ax = sns.barplot(x=data['rating_avg'], y=data['title'], data=data, palette='deep')
@@ -86,10 +86,63 @@ def get_first_rec(db: Session, limit: int = 10):
     plt.xlabel('Average Score', weight='bold')
     plt.ylabel('Title', weight='bold')
     plt.show()
+    
+def get_2_rec(db: Session, limit: int = 10):
+    import seaborn as sns
+    data_db = db.query(Books.rating_quantity, func.array_agg(Authors.name).label('title'))\
+                .join(BookAuthors, BookAuthors.ref_book_id == Books.id)\
+                .join(Authors, Authors.id == BookAuthors.ref_authors_id)\
+                .group_by(Books.rating_quantity)\
+                .order_by(Books.rating_quantity.desc()).limit(limit)
+    data = pd.DataFrame(data_db)
+    print(data.head(10))
+    data['title'] = [i[0] for i in data['title']]
+
+    ax = sns.barplot(x=data['rating_quantity'], y=data['title'], data=data, palette='deep')
+
+    # plt.xlim(1.0, 5.0)
+    plt.title('"Best" Book by rating average', weight='bold')
+    plt.xlabel('Popularity', weight='bold')
+    plt.ylabel('Title', weight='bold')
+    # plt.show()
+
+def get_3_rec(db: Session, limit: int = 10):
+    import seaborn as sns
+    from sklearn import preprocessing
+
+    data_db = db.query(Books.rating_quantity, Books.rating_avg, func.array_agg(Authors.name).label('title'))\
+                .join(BookAuthors, BookAuthors.ref_book_id == Books.id)\
+                .join(Authors, Authors.id == BookAuthors.ref_authors_id)\
+                .group_by(Books.rating_quantity, Books.rating_avg)\
+                .order_by(Books.rating_avg.desc()).limit(limit)
+    data_df = pd.DataFrame(data_db)
+
+    min_max_scaler = preprocessing.MinMaxScaler()
+    movies_scaled = min_max_scaler.fit_transform(data_df[['rating_quantity', 'rating_avg']])
+    movies_norm = pd.DataFrame(movies_scaled, columns=['rating_quantity', 'rating_avg'])
+
+    data_df[['norm_rating_quantity', 'norm_rating_avg']] = movies_norm
+    v1 = 0.5
+    v2 = 0.5
+
+    data_df['rating'] = data_df['norm_rating_quantity'] * 0.5 + data_df['norm_rating_avg'] * 0.5
+
+    data = data_df.sort_values('rating', ascending=False)
+
+    data['title'] = [i[0] for i in data['title']]
+
+    ax = sns.barplot(x=data['rating'], y=data['title'], data=data, palette='deep')
+
+    plt.title(f'"Best" Book by rating with coefficient {int(v1 * 100)}/{int(v2 * 100)}', weight='bold')
+    plt.xlabel('rating', weight='bold')
+    plt.ylabel('Title', weight='bold')
+    plt.show()
 
 def calc_recommendation(db: Session, user_id: UUID):
 
-    get_first_rec(db)
+    # get_1_rec(db)
+    # get_2_rec(db)
+    get_3_rec(db)
     return
     pivot = data.pivot_table(index ='user_id',columns ='book_id', values ='evaluation')
     del data
