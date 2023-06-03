@@ -85,7 +85,6 @@ def test(data: Annotated[dict, Depends(has_access)], db: Session = Depends(get_d
     if not user_id:
         raise Exception("Problem in '/get_recommendation': Not user_id")
     id_books = calc_recommendation(db, user_id)
-    # return crud_books.get_books_by_id_for_recommendation(db, id_books)
     return id_books
 
 
