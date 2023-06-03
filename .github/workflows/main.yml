@@ -1,4 +1,4 @@
-name: Example CI CD by Panov
+name: CI\CD by Panov
 
 on:
   push:
