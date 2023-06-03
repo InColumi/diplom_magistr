@@ -90,7 +90,7 @@ def test(data: Annotated[dict, Depends(has_access)], db: Session = Depends(get_d
 
 
 @router.post('/search')
-def test(query: str, db: Session = Depends(get_db)):
+def search(query: str, db: Session = Depends(get_db)):
     books_id_int = get_books_id_by_smart_search(db, query)
     books_id_uuid = crud_books.get_books_uuid_by_int(db, books_id_int)
     return crud_books.get_books_by_id_for_recommendation(db, books_id_uuid)

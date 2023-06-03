@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Text, Integer, ForeignKeyConstraint
+from sqlalchemy import Column, Text, Integer
 from models.base import Base
 
 
@@ -9,7 +9,6 @@ class Test(Base):
     context = Column(type_=Text, nullable=False)
     id_book = Column(type_=Integer, nullable=False)
     centroid_id = Column(type_=Integer, nullable=False)
-    
 
     def __repr__(self) -> str:
         return f"Test(id={self.id}, \
