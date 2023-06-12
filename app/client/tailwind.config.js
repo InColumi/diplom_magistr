@@ -7,11 +7,14 @@ module.exports = withMT({
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
+  variants: {
+    lineClamp: ['responsive']
+  },
   theme: {
     extend: {
       colors: {
-        "nightbg": "#262832",
-        "night": "#12131A",
+        "nightbg": "#D3C3B6",
+        "night": "#FCF8F5",
         "404": "#EF6950",
       },
       backgroundSize: {
@@ -76,7 +79,13 @@ module.exports = withMT({
         '2xl': '1920px',
         // => @media (min-width:1920px) { ... }
       },
+      keyframes: {
+        shimmer: {
+          '100%': { transform: 'translateX(100%)' }
+        },
+      },
     },
   },
-  plugins: [require("tailwind-scrollbar")({ nocompatible: true })],
+  plugins: [require("tailwind-scrollbar")({ nocompatible: true }),
+  require('@neojp/tailwindcss-line-clamp-utilities')],
 })
