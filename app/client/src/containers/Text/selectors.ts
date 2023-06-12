@@ -8,3 +8,6 @@ export const isFetchingS = (state: RootStateInterface): any =>
 
 export const textS = (state: RootStateInterface): any =>
     TextState(state).get('text')
+
+export const textInfoS = (state: RootStateInterface): any =>
+    TextState(state).get('textInfo')

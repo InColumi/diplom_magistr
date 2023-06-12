@@ -1,74 +1,105 @@
 import React, { FC, useEffect, useState } from 'react'
-import Book from '../../components/Text'
+import Text from '../../components/Text'
 import { useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { isFetchingS, textS } from './selectors'
+import { isFetchingS, textS, textInfoS } from './selectors'
 import { getTextA } from './actions'
+import { saveProgressA } from '../Player/actions'
 
 type TextContainerProps = {
     isFetching: boolean
-    text: any
+    text: string
+    textInfo: {
+        authors: []
+        current_page: number
+        title: string
+        total_pages: number
+    }
     getText: (data: any) => void
+    saveProgress: (data: any) => void
 }
 
 const TextContainer: FC<TextContainerProps> = ({
     isFetching,
     text,
+    textInfo,
     getText,
+    saveProgress,
 }) => {
     const { id } = useParams()
     const [decodedText, setDecodedText] = useState<any>(undefined)
-    const [windowHeight, setWindowHeight] = useState<any>(undefined)
+    const [currentPage, setCurrentPage] = useState<number>(0)
+
+    const handleFlipPage = (direction: string): void => {
+        switch (direction) {
+            case 'forward':
+                if (currentPage + 1 < textInfo.total_pages) {
+                    setCurrentPage(currentPage + 1)
+                }
+                break
+            case 'back':
+                if (currentPage >= 1) {
+                    setCurrentPage(currentPage - 1)
+                }
+                break
+            default:
+                break
+        }
+    }
 
     useEffect(() => {
-        const size = window.innerHeight
-        /// добавить ивент-лиснер на кей-ап
+        if (currentPage === 0) return
+        saveProgress({
+            data: {
+                id,
+                current_page: currentPage,
+            },
+        })
+    }, [id, currentPage, saveProgress])
+
+    useEffect(() => {
+        setCurrentPage(textInfo.current_page)
+    }, [textInfo])
+
+    useEffect(() => {
         getText({
             id,
-            count_new_row: size > 754 ? 38 : 30,
+            count_new_row: 30,
         })
-    }, [windowHeight])
-
-    useEffect(() => {
-        const handleResize = () => {
-            setWindowHeight(window.innerHeight)
-        }
-
-        window.addEventListener('resize', handleResize)
-
-        return () => {
-            window.removeEventListener('resize', handleResize)
-        }
     }, [])
 
     useEffect(() => {
         if (text) {
             const obj = JSON.parse(text)
-            const formattedText = obj.text
-                .split('\n')
-                .map((str: any, index: any) => (
-                    <React.Fragment key={index}>
+            const formattedText = obj.map((item: any) =>
+                item.split('\n').map((str: any, index: any) => (
+                    <h2 key={index}>
                         {str}
                         <br />
-                    </React.Fragment>
+                    </h2>
                 ))
+            )
             setDecodedText(formattedText)
         }
     }, [text])
 
-    useEffect(() => {
-        console.log(decodedText)
-    }, [decodedText])
-
-    return <Book text={decodedText} />
+    return (
+        <Text
+            text={decodedText}
+            currentPage={currentPage}
+            handleFlipPage={handleFlipPage}
+        />
+    )
 }
 
 export default connect(
     (state: RootStateInterface) => ({
         isFetching: isFetchingS(state),
         text: textS(state),
+        textInfo: textInfoS(state),
     }),
     {
         getText: getTextA.request,
+        saveProgress: saveProgressA.request,
     }
 )(TextContainer)

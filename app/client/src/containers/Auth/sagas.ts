@@ -7,7 +7,6 @@ import { getUser, getLogin, getRegister } from '../../services/api'
 function* getUserS(action: ActionType<typeof getUserA.request>): SagaIterator {
     try {
         const payload = yield call(getUser)
-        console.log(payload)
         const { username } = payload
         yield put(getUserA.success(username))
     } catch (error) {
@@ -29,8 +28,9 @@ function* registerS(
     action: ActionType<typeof registerUserA.request>
 ): SagaIterator {
     try {
-        yield call(getRegister, action.payload)
+        yield call(getRegister, action.payload.data)
         yield put(registerUserA.success())
+        yield call(action.payload.callback)
     } catch (error) {
         yield put(registerUserA.failure(error as Error))
     }

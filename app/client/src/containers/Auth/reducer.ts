@@ -29,7 +29,7 @@ export function reducer(
             return state.set('isAuth', true).set('isFetching', false)
         }
         case getType(loginA.failure): {
-            return state.set('error', true)
+            return state.set('error', true).set('isFetching', false)
         }
         case getType(getUserA.request): {
             return state.set('isFetching', true)
@@ -47,7 +47,7 @@ export function reducer(
             return state.set('isFetching', false)
         }
         case getType(registerUserA.failure): {
-            return state.set('error', true)
+            return state.set('error', true).set('isFetching', false)
         }
         default:
             return state
