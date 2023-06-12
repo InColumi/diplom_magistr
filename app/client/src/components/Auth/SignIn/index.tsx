@@ -1,10 +1,12 @@
 import React, { ReactElement, SyntheticEvent } from 'react'
 import { Input, Button } from '@material-tailwind/react'
 import { TfiEmail } from 'react-icons/tfi'
+import { CgSpinner } from 'react-icons/cg'
 import { RxEyeOpen, RxEyeClosed } from 'react-icons/rx'
 import WavingHand from '../../../UI/WavingHandSvg'
 
 type SignInProps = {
+    isFetching: boolean
     isShowPassword: boolean
     email: string
     password: string
@@ -15,6 +17,7 @@ type SignInProps = {
 }
 
 const SignIn = ({
+    isFetching,
     isShowPassword,
     email,
     password,
@@ -64,7 +67,7 @@ const SignIn = ({
                                         id="email"
                                         size={'lg'}
                                         color="blue"
-                                        className="bg-gray-200"
+                                        className="bg-gray-200 text-xl"
                                         variant="outlined"
                                         label="Email or Login"
                                         value={email}
@@ -82,7 +85,7 @@ const SignIn = ({
                                             isShowPassword ? 'password' : 'text'
                                         }
                                         color="blue"
-                                        className="bg-gray-200"
+                                        className="bg-gray-200 text-xl"
                                         variant="outlined"
                                         label="Password"
                                         value={password}
@@ -114,13 +117,20 @@ const SignIn = ({
                                 </div>
                                 <div className="flex justify-end mt-3">
                                     <Button
-                                        className="rounded-2xl w-3/7 h-12 normal-case text-md"
+                                        className="flex items-center justify-center rounded-2xl w-[120px] h-12 normal-case text-md"
                                         variant="filled"
                                         onClick={(e: SyntheticEvent): void =>
                                             handleSubmit(e)
                                         }
                                     >
-                                        Sign In
+                                        {isFetching ? (
+                                            <CgSpinner
+                                                className="animate-spin text-white"
+                                                size="26"
+                                            />
+                                        ) : (
+                                            'Sign In'
+                                        )}
                                     </Button>
                                 </div>
                             </div>

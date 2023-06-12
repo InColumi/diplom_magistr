@@ -37,6 +37,7 @@ axiosApiInstance.interceptors.response.use(
                 return axiosApiInstance(originalRequest)
             } catch (error) {
                 localStorage.clear()
+                window.location.href = '/'
                 return Promise.reject(error)
             }
         }

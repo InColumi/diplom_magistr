@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react'
+import { ReactElement, useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Route, Routes } from 'react-router-dom'
 import SignUpContainer from './containers/Auth/SignUp'
@@ -11,13 +11,26 @@ import FavouriteContainer from './containers/Favourite'
 import SettingsContainer from './containers/Settings'
 import TextContainer from './containers/Text'
 import PrivateRoute from './HOC/privateRoute'
+import { isAuthS } from './containers/Auth/selectors'
 
-const App = (): ReactElement => {
+type AppProps = {
+    isAuth: boolean
+}
+
+const App = ({ isAuth }: AppProps): ReactElement => {
     const [isOpen, setOpen] = useState<boolean>(false)
+    const [isUser, setUser] = useState<string | null>(null)
+    const user = (): string | null => {
+        return localStorage.getItem('user')
+    }
+
+    useEffect(() => {
+        setUser(user())
+    }, [isAuth])
 
     return (
         <div className="flex">
-            <SidebarContainer setOpen={setOpen} />
+            {isUser && <SidebarContainer setOpen={setOpen} />}
             <SettingsContainer isOpen={isOpen} setOpen={setOpen} />
             <Routes>
                 <Route element={<PrivateRoute />}>
@@ -29,9 +42,6 @@ const App = (): ReactElement => {
                 <Route element={<PrivateRoute />}>
                     <Route path="/favourite" element={<FavouriteContainer />} />
                 </Route>
-                {/* <Route element={<PrivateRoute />}>
-                    <Route path="/settings" element={<SettingsContainer />} />
-                </Route> */}
                 <Route element={<PrivateRoute />}>
                     <Route path="/text/:id" element={<TextContainer />} />
                 </Route>
@@ -43,4 +53,9 @@ const App = (): ReactElement => {
     )
 }
 
-export default connect((state: RootStateInterface) => ({}), {})(App)
+export default connect(
+    (state: RootStateInterface) => ({
+        isAuth: isAuthS(state),
+    }),
+    {}
+)(App)

@@ -4,16 +4,18 @@ import { useNavigate } from 'react-router-dom'
 import { SyntheticEvent } from 'react'
 
 import { loginA } from '../actions'
-import { isAuthS } from '../selectors'
+import { isAuthS, isFetchingS } from '../selectors'
 
 import SignIn from '../../../components/Auth/SignIn'
 
 type SignInContainerProps = {
+    isFetching: boolean
     isAuth: boolean
     login: (data: any) => void
 }
 
 const SignInContainer = ({
+    isFetching,
     isAuth,
     login,
 }: SignInContainerProps): ReactElement => {
@@ -64,6 +66,7 @@ const SignInContainer = ({
 
     return (
         <SignIn
+            isFetching={isFetching}
             isShowPassword={isShowPassword}
             email={email}
             password={password}
@@ -77,6 +80,7 @@ const SignInContainer = ({
 
 export default connect(
     (state: RootStateInterface) => ({
+        isFetching: isFetchingS(state),
         isAuth: isAuthS(state),
     }),
     {

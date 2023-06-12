@@ -1,15 +1,18 @@
 import React, { ReactElement, useState } from 'react'
 import SignUp from '../../../components/Auth/SignUp'
 import { registerUserA, getUserA } from '../actions'
+import { isFetchingS } from '../selectors'
 import { connect } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 type SignUpContainerProps = {
+    isFetching: boolean
     registerUser: (data: any) => void
     getUser: () => any
 }
 
 const SignUpContainer = ({
+    isFetching,
     registerUser,
     getUser,
 }: SignUpContainerProps): ReactElement => {
@@ -36,8 +39,10 @@ const SignUpContainer = ({
     }
 
     const handleSubmit = (): void => {
-        registerUser({ email, password, username: login })
-        handleNavToSignIn()
+        registerUser({
+            data: { email, password, username: login },
+            callback: (): void => handleNavToSignIn(),
+        })
     }
 
     const handleNavToSignIn = (): void => {
@@ -46,6 +51,7 @@ const SignUpContainer = ({
 
     return (
         <SignUp
+            isFetching={isFetching}
             isShowPassword={isShowPassword}
             login={login}
             email={email}
@@ -58,7 +64,12 @@ const SignUpContainer = ({
     )
 }
 
-export default connect((state: RootStateInterface) => ({}), {
-    registerUser: registerUserA.request,
-    getUser: getUserA.request,
-})(SignUpContainer)
+export default connect(
+    (state: RootStateInterface) => ({
+        isFetching: isFetchingS(state),
+    }),
+    {
+        registerUser: registerUserA.request,
+        getUser: getUserA.request,
+    }
+)(SignUpContainer)

@@ -4,8 +4,10 @@ import { TfiEmail } from 'react-icons/tfi'
 import { RxEyeOpen, RxEyeClosed } from 'react-icons/rx'
 import { VscAccount } from 'react-icons/vsc'
 import WavingHand from '../../../UI/WavingHandSvg'
+import { CgSpinner } from 'react-icons/cg'
 
 type SignUpProps = {
+    isFetching: boolean
     isShowPassword: boolean
     login: string
     email: string
@@ -17,6 +19,7 @@ type SignUpProps = {
 }
 
 const SignUp = ({
+    isFetching,
     isShowPassword,
     login,
     email,
@@ -135,11 +138,18 @@ const SignUp = ({
                             </div>
                             <div className="flex justify-end">
                                 <Button
-                                    className="rounded-xl w-30 h-12 normal-case text-md"
+                                    className="flex items-center justify-center rounded-2xl w-[120px] h-12 normal-case text-md"
                                     variant="filled"
                                     onClick={(): void => handleSubmit()}
                                 >
-                                    Sign Up
+                                    {isFetching ? (
+                                        <CgSpinner
+                                            className="animate-spin text-white"
+                                            size="26"
+                                        />
+                                    ) : (
+                                        'Sign Up'
+                                    )}
                                 </Button>
                             </div>
                         </div>
