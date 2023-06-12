@@ -71,7 +71,7 @@ hover:shadow-md hover:shadow-blue-gray-800 duration-400 ease-linear transition-a
                         <div className="flex h-full flex-col gap-5">
                             <h1
                                 className={`${getFlag(name)} text-start
-                                text-brown-400 font-bold font-['Monaco']`}
+                                text-blue-gray-400 font-bold font-['Monaco']`}
                             >
                                 {name}
                             </h1>
@@ -80,7 +80,7 @@ hover:shadow-md hover:shadow-blue-gray-800 duration-400 ease-linear transition-a
                                     author[0].length < 12
                                         ? '2xl:text-4xl xl:text-4xl'
                                         : '2xl:text-4xl xl:text-3xl'
-                                } text-brown-300 font-sans line-clamp-2`}
+                                } text-white font-sans line-clamp-2`}
                             >
                                 {author[0]}
                             </h2>

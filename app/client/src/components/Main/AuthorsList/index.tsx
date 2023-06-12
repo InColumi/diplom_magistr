@@ -64,15 +64,15 @@ const AuthorList = ({ topAuthors }: AuthorListProps): ReactElement => {
             <h1 className="2xl:text-4xl xl:text-xl text-gray-400 font-semibold pb-5 uppercase pl-2">
                 Popular Authors
             </h1>
-            <div className="h-[95%]">
-                <ul className="flex h-full w-full flex-col gap-1 justify-between xl:rounded-2xl rounded-3xl">
+            <div className="h-[95%] sm:h-[100%] sm:mb-20">
+                <ul className="flex h-full w-full flex-col gap-1 justify-between xl:rounded-2xl sm:rounded-xl rounded-3xl">
                     {topAuthors.map((item: any) => (
                         <li key={item?.ref_authors_id}>
                             <div
-                                className="flex w-full items-center 2xl:gap-3 xl:gap-3 pl-1 2xl:py-4 xl:pr-3 border-2 border-nightbg 2xl:rounded-3xl xl:rounded-xl cursor-pointer
+                                className="flex w-full items-center 2xl:gap-3 xl:gap-3 pl-1 2xl:py-4 xl:pr-3 border-2 border-nightbg 2xl:rounded-3xl xl:rounded-xl sm:rounded-xl cursor-pointer
                                 hover:bg-nightbg hover:shadow-md hover:shadow-blue-gray-800 hover:scale-[98%] duration-300 ease-linear transition-all"
                             >
-                                <div className="h-full 2xl:pl-1 2xl:p-0 xl:p-1 2xl:w-1/5 xl:w-1/5">
+                                <div className="h-full 2xl:pl-1 2xl:p-0 xl:p-1 sm:p-1 2xl:w-1/5 xl:w-1/5 sm:w-1/6 sm:mr-2">
                                     <img
                                         src="https://www.svgrepo.com/show/91079/avatar.svg"
                                         alt=""

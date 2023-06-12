@@ -44,14 +44,14 @@ type SidebarProps = {
 
 const SideBar = ({ setOpen, handleLogOut }: SidebarProps): ReactElement => {
     return (
-        <div className="relative top-0 left-0 h-screen w-16 m-0 flex flex-col justify-between bg-night border-nightbg border-r-2 text-white shadow-lg z-10">
-            <div className="flex flex-col gap-5 pt-5">
+        <div className="xl:relative sm:fixed xl:top-0 left-0 h-screen w-16 m-0 flex flex-col justify-between bg-night border-nightbg border-r-2 text-white shadow-lg z-10 sm:w-full sm:h-20 sm:flex-row sm:bottom-0">
+            <div className="flex flex-col gap-5 pt-5 sm:pt-2 sm:flex-row">
                 <img
                     src={require('../../UI/logonight.png')}
                     alt=""
-                    className={`w-12 h-12 cursor-pointer duration-500 ml-2.5`}
+                    className={`w-12 h-12 cursor-pointer duration-500 ml-2.5 sm:hidden`}
                 />
-                <div className="flex flex-col gap-5">
+                <div className="flex flex-col sm:flex-row sm:w-screen sm:justify-between gap-5 sm:px-2 sm:pb-2">
                     <Link to={'/'}>
                         <SideBarIcon
                             text={'Home'}
@@ -71,15 +71,23 @@ const SideBar = ({ setOpen, handleLogOut }: SidebarProps): ReactElement => {
                         />
                     </Link>
                     {/* <Link to={'/settings'}> */}
-                    <SideBarIcon
-                        text={'Settings'}
-                        icon={<RiSettingsFill size="28" />}
-                        onClick={(): void => setOpen(true)}
-                    />
+                    <div>
+                        <SideBarIcon
+                            text={'Settings'}
+                            icon={<RiSettingsFill size="28" />}
+                            onClick={(): void => setOpen(true)}
+                        />
+                    </div>
                     {/* </Link> */}
+                    <div className="2xl:hidden xl:hidden">
+                        <SideBarIcon
+                            text={'Logout'}
+                            icon={<RiLogoutBoxRLine size="28" />}
+                        />
+                    </div>
                 </div>
             </div>
-            <div className="px-2">
+            <div className="px-2 sm:hidden">
                 <div
                     className="pb-5 border-t pt-5 border-gray-400"
                     onClick={(): void => handleLogOut()}

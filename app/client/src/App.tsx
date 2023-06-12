@@ -29,7 +29,7 @@ const App = ({ isAuth }: AppProps): ReactElement => {
     }, [isAuth])
 
     return (
-        <div className="flex">
+        <div className="flex sm:flex-col-reverse">
             {isUser && <SidebarContainer setOpen={setOpen} />}
             <SettingsContainer isOpen={isOpen} setOpen={setOpen} />
             <Routes>

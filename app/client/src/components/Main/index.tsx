@@ -51,22 +51,22 @@ const Main: FC<MainProps> = ({
                 <MainSkeleton />
             ) : (
                 <div className="bg-night w-full">
-                    <div className="flex w-full h-full overflow-hidden max-h-screen">
-                        <div className="flex flex-col 2xl:w-4/5 xl:w-3/4">
+                    <div className="flex w-full h-full overflow-hidden sm:overflow-scroll sm:scrollbar-none max-h-screen sm:flex sm:flex-col">
+                        <div className="flex flex-col 2xl:w-4/5 xl:w-3/4 md:w-full">
                             <div className="flex justify-between items-center w-full xl:px-5 2xl:px-10 pt-5">
-                                <h2 className="2xl:text-4xl xl:text-xl text-gray-400 font-semibold uppercase">
+                                <h2 className="2xl:text-4xl xl:text-xl sm:text-sm sm:pl-5 text-gray-400 font-semibold uppercase">
                                     Continue reading or listening
                                 </h2>
-                                <div className="grid grid-cols-2 2xl:w-[124px] 2xl:h-12 xl:w-[76px] xl:h-[30px] 2xl:gap-7 xl:gap-5">
+                                <div className="grid grid-cols-2 2xl:w-[124px] 2xl:h-12 xl:w-[76px] xl:h-[30px] 2xl:gap-7 xl:gap-5 sm:gap-2 sm:pr-2">
                                     <div
                                         className="flex text-3xl p-1 bg-brown-300 2xl:w-12 2xl:h-12 xl:w-7 xl:h-7 cursor-pointer xl:rounded-lg 2xl:rounded-xl items-center justify-center
-                                    hover:bg-brown-300/80 duration-400 ease-linear transition-all"
+                                    hover:bg-brown-300/80 duration-400 ease-linear transition-all sm:rounded-md sm:text-xl"
                                         onClick={(): void => handleOpenText()}
                                     >
                                         <AiFillRead />
                                     </div>
                                     <div
-                                        className="flex text-3xl p-1 bg-blue-gray-300 2xl:w-12 2xl:h-12 xl:w-7 xl:h-7 cursor-pointer xl:rounded-lg 2xl:rounded-xl items-center justify-center
+                                        className="flex text-3xl p-1 bg-blue-gray-300 2xl:w-12 2xl:h-12 xl:w-7 xl:h-7 cursor-pointer xl:rounded-lg 2xl:rounded-xl sm:rounded-md sm:text-xl items-center justify-center
                                     hover:bg-blue-gray-300/80 duration-400 ease-linear transition-all"
                                         onClick={(): void =>
                                             handleOpenPlayer(

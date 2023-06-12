@@ -13,8 +13,8 @@ module.exports = withMT({
   theme: {
     extend: {
       colors: {
-        "nightbg": "#D3C3B6",
-        "night": "#FCF8F5",
+        "nightbg": "#262832",
+        "night": "#12131A",
         "404": "#EF6950",
       },
       backgroundSize: {
@@ -64,7 +64,7 @@ module.exports = withMT({
         'logo': "url('./UI/logo.svg')"
       },
       screens: {
-        'sm': '640px',
+        'sm': '320px',
         // => @media (min-width: 640px) { ... }
 
         'md': '920px',
