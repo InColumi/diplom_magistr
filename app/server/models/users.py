@@ -1,20 +1,16 @@
 from sqlalchemy import Boolean, Text, Column
-from sqlalchemy.orm import DeclarativeBase
+from models.base import Base
 import uuid
-
-
-class Base(DeclarativeBase):
-    pass
 
 
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(Text, primary_key=True, index=True, default=uuid.uuid4)
-    email = Column(Text, unique=True)
-    username = Column(Text, unique=True)
-    hashed_password = Column(Text, nullable=False)
-    is_deleted = Column(Boolean, default=False)
+    id = Column(type_=Text, primary_key=True, index=True, default=uuid.uuid4)
+    email = Column(type_=Text, unique=True, nullable=False)
+    username = Column(type_=Text, unique=True, nullable=False)
+    hashed_password = Column(type_=Text, nullable=False)
+    is_deleted = Column(type_=Boolean, default=False)
 
     def __repr__(self) -> str:
         return f"User(id={self.id},\

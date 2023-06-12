@@ -1,0 +1,3 @@
+[submodule "smart_search"]
+	path = smart_search
+	url = https://github.com/InColumi/smart_search.git

@@ -57,7 +57,6 @@ def get_user_me(user: Annotated[UserOut, Depends(get_active_current_user)]):
 
 @router.post('/refresh_token')
 async def refresh(token: TokenRefresh):
-    print(token)
     try:
         data = jwt.decode(token.refresh_token, settings.REFERSH_TOKEN_KEY)
         new_access_token = create_access_token(data)
@@ -69,7 +68,7 @@ async def refresh(token: TokenRefresh):
 
 @router.post('/sign_in')
 async def sing_in(user: UserLogin,  db: Session = Depends(get_db)):
-    db_user = crud_users.get_user_by_username(db, user.username)
+    db_user = crud_users.get_user_by_email_or_username(db, user.username_or_email)
     if not db_user:
         raise HTTPException(status_code=400, detail="Incorrect username or password")
     if not verify_password(user.password, db_user.hashed_password):
