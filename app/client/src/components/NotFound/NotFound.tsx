@@ -51,50 +51,50 @@ const NotFoundSvg = (): ReactElement => {
                         fill="#D7EBE2"
                         stroke="#B9D4C9"
                     />
-                    <path d="M450 633V78" stroke="#C9C5C5" stroke-width="2" />
+                    <path d="M450 633V78" stroke="#C9C5C5" strokeWidth="2" />
                     <path
                         d="M419 56L391 41.9019C401.218 30.6234 409.339 33.8458 412.123 36.8668L419 56Z"
                         fill="#E15C45"
                         stroke="#EF6950"
-                        stroke-width="2"
+                        strokeWidth="2"
                     />
                     <path
                         d="M168.5 73.7659C203.667 59.5993 302.5 50.0659 416.5 125.266"
                         stroke="#797C8C"
-                        stroke-width="11"
-                        stroke-linecap="round"
+                        strokeWidth="11"
+                        strokeLinecap="round"
                     />
                     <path
                         d="M168 285.032C203.167 270.865 302 261.332 416 336.532"
                         stroke="#797C8C"
-                        stroke-width="11"
-                        stroke-linecap="round"
+                        strokeWidth="11"
+                        strokeLinecap="round"
                     />
                     <path
                         d="M168 400.032C203.167 385.865 302 376.332 416 451.532"
                         stroke="#797C8C"
-                        stroke-width="11"
-                        stroke-linecap="round"
+                        strokeWidth="11"
+                        strokeLinecap="round"
                     />
                     <path
                         d="M168 461.032C203.167 446.865 302 437.332 416 512.532"
                         stroke="#797C8C"
-                        stroke-width="11"
-                        stroke-linecap="round"
+                        strokeWidth="11"
+                        strokeLinecap="round"
                     />
                     <path
                         d="M168 348.032C203.167 333.865 302 324.332 416 399.532"
                         stroke="#797C8C"
-                        stroke-width="11"
-                        stroke-linecap="round"
+                        strokeWidth="11"
+                        strokeLinecap="round"
                     />
                     <path
                         d="M175.5 121.5V242C270.7 210.801 369.167 255 406.5 281V173C348.1 110.6 228.167 112.667 175.5 121.5Z"
                         fill="#474A62"
                         fill-opacity="0.72"
                         stroke="#797C8C"
-                        stroke-width="11"
-                        stroke-linecap="round"
+                        strokeWidth="11"
+                        strokeLinecap="round"
                     />
                     <path
                         d="M822.5 556.116L836 36.6164C645.2 6.61637 499.167 62.1164 450 93.6164V622.616C566.5 532.616 741.167 544.783 822.5 556.116Z"
@@ -104,39 +104,39 @@ const NotFoundSvg = (): ReactElement => {
                     <path
                         d="M772 310.766C736.833 296.599 638 287.066 524 362.266"
                         stroke="#C9D6CD"
-                        stroke-width="11"
-                        stroke-linecap="round"
+                        strokeWidth="11"
+                        strokeLinecap="round"
                     />
                     <path
                         d="M772 97.7659C736.833 83.5993 638 74.0659 524 149.266"
                         stroke="#C9D6CD"
-                        stroke-width="11"
-                        stroke-linecap="round"
+                        strokeWidth="11"
+                        strokeLinecap="round"
                     />
                     <path
                         d="M772 425.766C736.833 411.599 638 402.066 524 477.266"
                         stroke="#C9D6CD"
-                        stroke-width="11"
-                        stroke-linecap="round"
+                        strokeWidth="11"
+                        strokeLinecap="round"
                     />
                     <path
                         d="M772 373.766C736.833 359.599 638 350.066 524 425.266"
                         stroke="#C9D6CD"
-                        stroke-width="11"
-                        stroke-linecap="round"
+                        strokeWidth="11"
+                        strokeLinecap="round"
                     />
                     <path
                         d="M507 199.618C573.743 130.399 718.31 126.121 778.5 135.92V195.92V273.42C669.7 238.811 549.667 290.579 507 319.42V199.618Z"
                         fill="#C9D6CD"
                         stroke="#DCE9E0"
-                        stroke-width="11"
-                        stroke-linecap="round"
+                        strokeWidth="11"
+                        strokeLinecap="round"
                     />
                     <path
                         d="M210.388 178.314C261.388 171.314 374.488 171.314 418.888 227.314"
                         stroke="#797C8C"
-                        stroke-width="11"
-                        stroke-linecap="round"
+                        strokeWidth="11"
+                        strokeLinecap="round"
                     />
                     <g filter="url(#filter0_d_68_2)">
                         <path
@@ -210,7 +210,7 @@ const NotFoundSvg = (): ReactElement => {
                         d="M450 78V631.5C524.8 553.5 635.833 537.333 682 539L694 510L635 497L639.5 483L602 471C603.5 469.5 608.6 465 617 459C602.2 457.4 610.833 447 617 442L567 437.5L611 418.5C601.667 418.5 572.1 421 528.5 431C543.7 405 573.833 387.167 587 381.5L584.5 360.5L596.5 351V340L606.5 335C605.833 333.667 603.5 329.2 599.5 322C607.5 312.4 611.5 301.667 612.5 297.5C604.5 298.333 587 300 581 300C580 296.5 597.5 282.5 619.5 270.5C616.3 271.3 617 260 618 259.5L621.5 255.5L606.5 247L612.5 233.5L613 231.5C612.5 230.833 607.8 229 611 225C608 221.5 595 231.5 567 243.5C576.2 227.9 602.167 204 614 194L595 197L616.5 178C613.167 177 603.8 176.9 593 184.5C595 170.5 617.667 149.5 629 144.5C626.333 145.5 614 148.3 602 151.5C587 155.5 560.667 168.333 536.5 182L547 164C548.667 162.667 555 156.9 567 144.5C561.4 147.3 554.667 143.333 552 141L574 121C571.667 121.5 567 121.3 567 116.5C585.4 92.1 604 80.6667 611 78V67.5H581.5L602 56L595 50.5L611 40.5V24.5H588C590.5 22.6667 597.7 17 606.5 9C550.1 18.2 478.667 58.8333 450 78Z"
                         fill="#FBFDFD"
                         stroke="#FBFDFD"
-                        stroke-width="2"
+                        strokeWidth="2"
                     />
                     <path
                         d="M401.902 467C399.736 454.667 396.702 415.7 401.902 358.5C390.902 315 393.402 262.999 406.902 207.999C416.843 167.499 401.902 153.108 401.902 116C401.902 80 413.902 65.499 413.902 58.5C415.579 53.3165 418.287 41.4664 410.468 35.5031C409.588 34.9554 408.761 34.4502 408 34C408.92 34.4432 409.74 34.9476 410.468 35.5031C419.035 40.8339 432.598 50.1853 438.402 51.999C444.802 53.999 436.402 82.1657 431.402 95.999C428.402 106.166 424.902 133.799 434.902 162.999C437.702 193.399 430.069 226.999 425.902 239.999C420.569 253.832 413.102 295.499 425.902 351.499C430.302 379.099 427.735 408.332 425.902 419.499C424.379 436.668 425.387 475.129 425.771 484.397C425.857 484.993 425.902 485.529 425.902 485.999C425.902 486.961 425.85 486.285 425.771 484.397C424.851 478.012 419.237 464.779 413.902 453.499L401.902 467Z"
@@ -219,7 +219,7 @@ const NotFoundSvg = (): ReactElement => {
                     <path
                         d="M408 34C400.5 33.999 391.5 39.5 390.5 42.5M408 34C418.8 39.2008 415.735 52.8337 413.902 58.5C413.902 65.499 401.902 80 401.902 116C401.902 153.108 416.843 167.499 406.902 207.999C393.402 262.999 390.902 315 401.902 358.5C396.702 415.7 399.736 454.667 401.902 467L413.902 453.499C419.735 465.832 425.902 480.5 425.902 485.999C425.902 491.684 424.069 440.166 425.902 419.499C427.735 408.332 430.302 379.099 425.902 351.499C413.102 295.499 420.569 253.832 425.902 239.999C430.069 226.999 437.702 193.399 434.902 162.999C424.902 133.799 428.402 106.166 431.402 95.999C436.402 82.1657 444.802 53.999 438.402 51.999C432.002 49.999 416.167 38.833 408 34Z"
                         stroke="#EF6950"
-                        stroke-width="2"
+                        strokeWidth="2"
                     />
                     <path
                         d="M591.191 539.642L590.889 537.93L596.335 524.646L597.577 524.427L598.045 527.08L597.206 527.228L593.091 537.265L593.115 537.399L603.287 535.606L603.613 537.452L591.191 539.642ZM599.903 541.741L599.19 537.695L599.049 536.898L596.872 524.552L598.853 524.202L601.884 541.392L599.903 541.741ZM613.028 539.669C611.763 539.892 610.625 539.738 609.614 539.206C608.602 538.67 607.745 537.785 607.044 536.553C606.341 535.315 605.824 533.762 605.495 531.893C605.167 530.035 605.123 528.408 605.361 527.01C605.604 525.605 606.109 524.478 606.876 523.627C607.648 522.77 608.661 522.231 609.914 522.01C611.167 521.789 612.301 521.949 613.314 522.492C614.331 523.028 615.191 523.915 615.894 525.152C616.602 526.384 617.119 527.928 617.447 529.786C617.776 531.655 617.823 533.291 617.585 534.694C617.347 536.092 616.845 537.216 616.077 538.067C615.309 538.912 614.292 539.446 613.028 539.669ZM612.702 537.823C613.956 537.602 614.823 536.826 615.303 535.495C615.784 534.164 615.827 532.379 615.433 530.141C615.17 528.652 614.787 527.413 614.284 526.423C613.786 525.432 613.192 524.715 612.502 524.271C611.818 523.826 611.062 523.677 610.234 523.823C608.991 524.042 608.129 524.826 607.645 526.174C607.161 527.517 607.116 529.305 607.509 531.538C607.772 533.026 608.151 534.263 608.648 535.249C609.145 536.234 609.735 536.947 610.418 537.386C611.107 537.824 611.868 537.97 612.702 537.823ZM621.127 534.364L620.825 532.652L626.272 519.368L627.514 519.149L627.982 521.801L627.142 521.949L623.027 531.986L623.051 532.121L633.224 530.327L633.549 532.173L621.127 534.364ZM629.84 536.462L629.127 532.417L628.986 531.619L626.809 519.273L628.79 518.924L631.821 536.113L629.84 536.462Z"
@@ -244,7 +244,7 @@ const NotFoundSvg = (): ReactElement => {
                     <path
                         d="M473.5 395L468 325.5"
                         stroke="#686A76"
-                        stroke-linecap="round"
+                        strokeLinecap="round"
                     />
                     <path
                         d="M596.501 340.999V351.499C558.901 337.899 492.167 376.666 467.001 397C465.501 383.167 467 343.499 467 321.499C489 290.999 620.001 260.499 618.001 260.999C616.401 261.399 618.667 267.833 620.001 270.999L582.501 298.999L613.501 296.499L601.501 321.499L607.501 335.499L596.501 340.999Z"
@@ -278,12 +278,9 @@ const NotFoundSvg = (): ReactElement => {
                         width="46.394"
                         height="38.623"
                         filterUnits="userSpaceOnUse"
-                        color-interpolation-filters="sRGB"
+                        colorInterpolationFilters="sRGB"
                     >
-                        <feFlood
-                            flood-opacity="0"
-                            result="BackgroundImageFix"
-                        />
+                        <feFlood floodOpacity="0" result="BackgroundImageFix" />
                         <feColorMatrix
                             in="SourceAlpha"
                             type="matrix"
@@ -316,12 +313,9 @@ const NotFoundSvg = (): ReactElement => {
                         width="28.8872"
                         height="37.8516"
                         filterUnits="userSpaceOnUse"
-                        color-interpolation-filters="sRGB"
+                        colorInterpolationFilters="sRGB"
                     >
-                        <feFlood
-                            flood-opacity="0"
-                            result="BackgroundImageFix"
-                        />
+                        <feFlood floodOpacity="0" result="BackgroundImageFix" />
                         <feColorMatrix
                             in="SourceAlpha"
                             type="matrix"
@@ -354,12 +348,9 @@ const NotFoundSvg = (): ReactElement => {
                         width="26.8384"
                         height="25.6084"
                         filterUnits="userSpaceOnUse"
-                        color-interpolation-filters="sRGB"
+                        colorInterpolationFilters="sRGB"
                     >
-                        <feFlood
-                            flood-opacity="0"
-                            result="BackgroundImageFix"
-                        />
+                        <feFlood floodOpacity="0" result="BackgroundImageFix" />
                         <feColorMatrix
                             in="SourceAlpha"
                             type="matrix"
@@ -392,12 +383,9 @@ const NotFoundSvg = (): ReactElement => {
                         width="26.8145"
                         height="25.6299"
                         filterUnits="userSpaceOnUse"
-                        color-interpolation-filters="sRGB"
+                        colorInterpolationFilters="sRGB"
                     >
-                        <feFlood
-                            flood-opacity="0"
-                            result="BackgroundImageFix"
-                        />
+                        <feFlood floodOpacity="0" result="BackgroundImageFix" />
                         <feColorMatrix
                             in="SourceAlpha"
                             type="matrix"
@@ -430,12 +418,9 @@ const NotFoundSvg = (): ReactElement => {
                         width="26.8076"
                         height="25.7012"
                         filterUnits="userSpaceOnUse"
-                        color-interpolation-filters="sRGB"
+                        colorInterpolationFilters="sRGB"
                     >
-                        <feFlood
-                            flood-opacity="0"
-                            result="BackgroundImageFix"
-                        />
+                        <feFlood floodOpacity="0" result="BackgroundImageFix" />
                         <feColorMatrix
                             in="SourceAlpha"
                             type="matrix"
@@ -468,12 +453,9 @@ const NotFoundSvg = (): ReactElement => {
                         width="35.8916"
                         height="33.3721"
                         filterUnits="userSpaceOnUse"
-                        color-interpolation-filters="sRGB"
+                        colorInterpolationFilters="sRGB"
                     >
-                        <feFlood
-                            flood-opacity="0"
-                            result="BackgroundImageFix"
-                        />
+                        <feFlood floodOpacity="0" result="BackgroundImageFix" />
                         <feColorMatrix
                             in="SourceAlpha"
                             type="matrix"
@@ -506,12 +488,9 @@ const NotFoundSvg = (): ReactElement => {
                         width="31.1567"
                         height="29.4111"
                         filterUnits="userSpaceOnUse"
-                        color-interpolation-filters="sRGB"
+                        colorInterpolationFilters="sRGB"
                     >
-                        <feFlood
-                            flood-opacity="0"
-                            result="BackgroundImageFix"
-                        />
+                        <feFlood floodOpacity="0" result="BackgroundImageFix" />
                         <feColorMatrix
                             in="SourceAlpha"
                             type="matrix"
@@ -544,12 +523,9 @@ const NotFoundSvg = (): ReactElement => {
                         width="13.4058"
                         height="12.5645"
                         filterUnits="userSpaceOnUse"
-                        color-interpolation-filters="sRGB"
+                        colorInterpolationFilters="sRGB"
                     >
-                        <feFlood
-                            flood-opacity="0"
-                            result="BackgroundImageFix"
-                        />
+                        <feFlood floodOpacity="0" result="BackgroundImageFix" />
                         <feColorMatrix
                             in="SourceAlpha"
                             type="matrix"
@@ -582,12 +558,9 @@ const NotFoundSvg = (): ReactElement => {
                         width="13.3545"
                         height="12.666"
                         filterUnits="userSpaceOnUse"
-                        color-interpolation-filters="sRGB"
+                        colorInterpolationFilters="sRGB"
                     >
-                        <feFlood
-                            flood-opacity="0"
-                            result="BackgroundImageFix"
-                        />
+                        <feFlood floodOpacity="0" result="BackgroundImageFix" />
                         <feColorMatrix
                             in="SourceAlpha"
                             type="matrix"
@@ -620,12 +593,9 @@ const NotFoundSvg = (): ReactElement => {
                         width="13.2852"
                         height="12.7842"
                         filterUnits="userSpaceOnUse"
-                        color-interpolation-filters="sRGB"
+                        colorInterpolationFilters="sRGB"
                     >
-                        <feFlood
-                            flood-opacity="0"
-                            result="BackgroundImageFix"
-                        />
+                        <feFlood floodOpacity="0" result="BackgroundImageFix" />
                         <feColorMatrix
                             in="SourceAlpha"
                             type="matrix"

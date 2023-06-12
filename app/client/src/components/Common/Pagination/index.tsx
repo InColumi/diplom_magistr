@@ -3,12 +3,14 @@ import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
 
 type PaginationProps = {
     page: number
+    total: number
     incrementPage: (data: any) => void
     decrementPage: (data: any) => void
 }
 
 const Pagination: FC<PaginationProps> = ({
     page,
+    total,
     incrementPage,
     decrementPage,
 }) => {
@@ -26,8 +28,8 @@ const Pagination: FC<PaginationProps> = ({
                         </div>
                     </li>
                     <li>
-                        <div className="flex items-center justify-center w-10 h-10 border-2 border-nightbg p-2 rounded-md text-gray-400">
-                            {page}
+                        <div className="flex items-center justify-center h-10 text-gray-400">
+                            {page} of {total}
                         </div>
                     </li>
                     <li>

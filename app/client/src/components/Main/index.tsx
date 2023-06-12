@@ -1,95 +1,115 @@
-import React, { ReactElement } from 'react'
-import { Button } from '@material-tailwind/react'
-
+import React, { FC } from 'react'
+import { AiFillRead } from 'react-icons/ai'
+import { IoHeadsetSharp } from 'react-icons/io5'
 import SwiperBlock from './Swiper'
 import AuthorList from './AuthorsList'
+import LastBook from './LastBook'
+import PlayerContainer from '../../containers/Player'
+import MainSkeleton from '../Common/MainSkeleton'
 
-const Main = (): ReactElement => {
+type MainProps = {
+    isFetching: boolean
+    topAuthors: any
+    recomendations: any
+    lastBook: any
+    lastBookText: string
+    isPlayer: boolean
+    bookId: string
+    bookName: string
+    bookAuthor: string[]
+    bookUid: string
+    setPlayer: (data: boolean) => void
+    handleOpenPlayer: (
+        id: string,
+        id_text: string,
+        name: string,
+        authors: string[]
+    ) => void
+    handleOpenText: () => void
+    handleAdd: (data: any) => void
+}
+
+const Main: FC<MainProps> = ({
+    isFetching,
+    topAuthors,
+    recomendations,
+    lastBook,
+    lastBookText,
+    isPlayer,
+    bookId,
+    bookUid,
+    bookName,
+    bookAuthor,
+    setPlayer,
+    handleOpenPlayer,
+    handleOpenText,
+    handleAdd,
+}) => {
     return (
-        <div className="bg-night">
-            <div className="flex w-full h-full overflow-hidden max-h-screen">
-                <div className="flex flex-col w-4/5">
-                    <div className="flex w-full xl:pl-5 2xl:pl-10 pt-5">
-                        <h2 className="2xl:text-4xl xl:text-xl text-gray-400 font-semibold">
-                            Continue Reading
-                        </h2>
-                    </div>
-                    <div className="border-nightbg border-2 h-1/3 xl:m-5 2xl:m-10 2xl:mt-5 rounded-3xl flex">
-                        <div className="mr-8 flex flex-col w-5/6 2xl:gap-5 xl:gap-1 p-5">
-                            <div className="max-h-4/5 flex flex-col justify-between">
-                                <h1 className="2xl:text-8xl xl:text-5xl text-white font-bold font-['Monaco'] ">
-                                    A CLOCKWORK ORANGE
-                                </h1>
-                                <h2 className="max-h-3/5 2xl:text-2xl xl:text-md text-gray-500 text-justify overflow-hidden text-ellipsis mb-2">
-                                    Lorem, ipsum dolor sit amet consectetur
-                                    adipisicing elit. Modi, delectus quaerat
-                                    cupiditate animi doloremque unde, repellat
-                                    nam enim iste quam officiis! Ut incidunt
-                                    dolorem quasi ad quam? Perspiciatis id alias
-                                    ex culpa aliquam illo consequatur,
-                                    laudantium, qui a autem suscipit reiciendis
-                                    sint ducimus fugiat est. Doloremque enim
-                                    nobis culpa modi unde nam cupiditate
-                                    veritatis quam rerum architecto laboriosam
-                                    laudantium praesentium porro ea eveniet amet
-                                    perspiciatis corporis, qui, aspernatur
-                                    voluptas nihil atque? Rem distinctio laborum
-                                    iure dolores ad cum eveniet sed molestiae
-                                    accusamus labore! Debitis unde sapiente
-                                    laborum provident sequi deleniti commodi
-                                    molestias velit inventore aliquam ipsa quo,
-                                    qui saepe reprehenderit pariatur placeat
-                                    aperiam perspiciatis dolores. Tempore vel
-                                    accusantium, libero aliquam ratione delectus
-                                    officiis. Nobis unde voluptatibus
-                                    reprehenderit expedita officiis, ducimus,
-                                    quod dolor sit modi molestiae labore
-                                    repellat sapiente natus porro aliquam
-                                    facere! Similique assumenda iure ipsa
-                                    adipisci eius nisi. Asperiores magni omnis
-                                    pariatur debitis eligendi sint voluptatum
-                                    nam voluptate tempore. Nobis unde
-                                    voluptatibus reprehenderit expedita
-                                    officiis, ducimus, quod dolor sit modi
-                                    molestiae labore repellat sapiente natus
-                                    porro aliquam facere! Similique assumenda
-                                    iure ipsa adipisci eius nisi. Asperiores
-                                    magni omnis pariatur debitis eligendi sint
-                                    voluptatum nam voluptate tempore. Asperiores
-                                    magni omnis pariatur debitis eligendi sint
-                                    voluptatum nam voluptate tempore.
+        <>
+            {isFetching ? (
+                <MainSkeleton />
+            ) : (
+                <div className="bg-night w-full">
+                    <div className="flex w-full h-full overflow-hidden max-h-screen">
+                        <div className="flex flex-col 2xl:w-4/5 xl:w-3/4">
+                            <div className="flex justify-between items-center w-full xl:px-5 2xl:px-10 pt-5">
+                                <h2 className="2xl:text-4xl xl:text-xl text-gray-400 font-semibold uppercase">
+                                    Continue reading or listening
                                 </h2>
+                                <div className="grid grid-cols-2 2xl:w-[124px] 2xl:h-12 xl:w-[76px] xl:h-[30px] 2xl:gap-7 xl:gap-5">
+                                    <div
+                                        className="flex text-3xl p-1 bg-brown-300 2xl:w-12 2xl:h-12 xl:w-7 xl:h-7 cursor-pointer xl:rounded-lg 2xl:rounded-xl items-center justify-center
+                                    hover:bg-brown-300/80 duration-400 ease-linear transition-all"
+                                        onClick={(): void => handleOpenText()}
+                                    >
+                                        <AiFillRead />
+                                    </div>
+                                    <div
+                                        className="flex text-3xl p-1 bg-blue-gray-300 2xl:w-12 2xl:h-12 xl:w-7 xl:h-7 cursor-pointer xl:rounded-lg 2xl:rounded-xl items-center justify-center
+                                    hover:bg-blue-gray-300/80 duration-400 ease-linear transition-all"
+                                        onClick={(): void =>
+                                            handleOpenPlayer(
+                                                bookId,
+                                                lastBook.id,
+                                                bookName,
+                                                bookAuthor
+                                            )
+                                        }
+                                    >
+                                        <IoHeadsetSharp />
+                                    </div>
+                                </div>
                             </div>
-                            <div className="flex items-center justify-between">
-                                <h3 className="2xl:text-xl xl:text-md font-semibold text-white/80">
-                                    Page 1 of 456
-                                </h3>
-                                <Button
-                                    className="rounded-2xl 2xl:w-1/5 xl:w-1/6 2xl:h-14 xl:h-10 normal-case 2xl:text-2xl xl:text-md text-blue-gray-900"
-                                    variant="filled"
-                                    color="yellow"
-                                >
-                                    Read Now
-                                </Button>
-                            </div>
-                        </div>
-                        <div className="flex w-1/6 pl-2 p-5">
-                            <img
-                                className="w-full h-full rounded-2xl opacity-70"
-                                src="https://m.media-amazon.com/images/I/51FTcHNhQqL.jpg"
-                                alt=""
+                            <LastBook
+                                lastBook={lastBook}
+                                lastBookText={lastBookText}
                             />
+                            <div className="flex flex-col gap-5 border-t-2 border-dashed border-blue-gray-900 h-2/3 2xl:p-10 xl:p-5 overflow-hidden">
+                                {recomendations?.length > 0 && (
+                                    <SwiperBlock
+                                        recomendations={recomendations}
+                                        handleAdd={handleAdd}
+                                    />
+                                )}
+                            </div>
+                        </div>
+                        <div className="2xl:w-1/5 xl:w-1/4 border-l-2 border-dashed border-blue-gray-900">
+                            <AuthorList topAuthors={topAuthors} />
                         </div>
                     </div>
-                    <div className="flex flex-col gap-5 border-t-2 border-dashed border-blue-gray-900 h-2/3 2xl:p-10 xl:p-5 overflow-hidden">
-                        <SwiperBlock />
-                    </div>
                 </div>
-                <div className="w-1/5 border-l-2 border-dashed border-blue-gray-900">
-                    <AuthorList />
-                </div>
-            </div>
-        </div>
+            )}
+            <PlayerContainer
+                isPlayer={isPlayer}
+                bookId={lastBook?.id_text}
+                second={lastBook?.current_second}
+                bookUid={bookUid}
+                bookName={lastBook?.title}
+                bookAuthor={lastBook?.authors}
+                setPlayer={setPlayer}
+            />
+        </>
     )
 }
 

@@ -19,8 +19,8 @@ const SideBarIcon = ({
 }: SideBarIconProps): ReactElement => {
     return (
         <div
-            className="relative flex items-center justify-center h-12 w-12
-        mt-2 mb-2 mx-auto shadow-lg bg-gray-800 text-white hover:bg-yellow-700
+            className="flex items-center justify-center h-12 w-12
+        mt-2 mb-2 mx-auto shadow-lg bg-nightbg text-white hover:bg-yellow-700
         hover:text-white rounded-3xl hover:rounded-xl transition-all duration-300 ease-linear
         cursor-pointer group"
             onClick={onClick}

@@ -13,20 +13,20 @@ const BooksNight = (): ReactElement => {
                 <path
                     d="M176.933 205.743L94 132.997"
                     stroke="#FDF2F2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                 />
                 <path
                     d="M262.358 173.308L272.317 75"
                     stroke="#FDF2F2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                 />
                 <path
                     d="M214.503 186.335L177.37 75.7744"
                     stroke="#FDF2F2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                 />
                 <rect
                     width="80"
@@ -74,89 +74,85 @@ const BooksNight = (): ReactElement => {
                 <path
                     d="M478.692 656.767C682 639.5 690.999 626.608 761.5 552"
                     stroke="#FDF2F2"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                 />
                 <path
                     d="M734 607.373L762.596 552"
                     stroke="#FDF2F2"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                 />
                 <path
                     d="M377.771 628.721L62.2585 384.417C58.9382 381.846 60.0745 376.575 64.1592 375.6L767.43 207.785C768.801 207.458 770.245 207.724 771.409 208.518L1082.2 420.53C1085.7 422.916 1084.83 428.3 1080.76 429.467L382.209 629.574C380.678 630.012 379.03 629.696 377.771 628.721Z"
                     fill="#F4A95A"
                     stroke="#F4A95A"
-                    stroke-width="11"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="11"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                 />
                 <path
                     d="M373.723 624.264L84.6229 398.867C74.0654 390.636 77.6819 373.852 90.6924 370.699L762.282 207.948C766.687 206.881 771.338 207.731 775.079 210.289L1061.91 406.332C1073.09 413.974 1070.31 431.184 1057.29 434.92L387.974 627.025C383.056 628.436 377.758 627.41 373.723 624.264Z"
                     fill="#211715"
                     fill-opacity="0.16"
                     stroke="#F4A95A"
-                    stroke-width="11"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="11"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                 />
                 <path
                     d="M443.184 272.559C375.087 241.885 182.849 311.937 94 350.926L394.721 589C488.415 503.229 745.976 497.756 770 516.684C689.435 448.09 511.281 303.232 443.184 272.559Z"
                     fill="#F5D0A9"
                     stroke="#F5D0A9"
-                    stroke-width="5"
+                    strokeWidth="5"
                 />
                 <path
                     d="M419.215 525L160 291.74C280.048 222.569 408.436 252.619 458.873 276.392L769 512.826C591.609 463.349 462.314 500.489 419.215 525Z"
                     fill="#FCE4CC"
                     stroke="#FCE4CC"
-                    stroke-width="2"
+                    strokeWidth="2"
                 />
                 <path
                     d="M286.002 321.271C302.38 314.997 355.909 301.413 439.002 297.271"
                     stroke="black"
-                    stroke-width="2"
+                    strokeWidth="2"
                 />
                 <path
                     d="M339.002 366.271C355.38 359.474 408.909 344.758 492.002 340.271"
                     stroke="black"
-                    stroke-width="2"
+                    strokeWidth="2"
                 />
                 <path
                     d="M311.002 341.271C327.38 334.736 380.909 320.585 464.002 316.271"
                     stroke="black"
-                    stroke-width="2"
+                    strokeWidth="2"
                 />
                 <path
                     d="M1056 340.5C926 510 893 395 763.752 510L471 286.268L757.5 160.5C808.457 198.035 980.464 292.115 1056 340.5Z"
                     fill="#F5D0A9"
                     stroke="#F5D0A9"
-                    stroke-width="2"
+                    strokeWidth="2"
                 />
                 <path
                     d="M765 510L471 285L649.73 124C700.772 163.167 889.509 252.8 954.977 298C956.985 347.6 826.418 463.667 765 510Z"
                     fill="#FCE4CC"
                     stroke="#FCE4CC"
-                    stroke-width="2"
+                    strokeWidth="2"
                 />
                 <path
                     d="M666.5 355L745 285M545.5 285L652.5 182L724 227L608.5 339L545.5 285Z"
                     stroke="#211715"
                     stroke-opacity="0.32"
-                    stroke-width="2"
+                    strokeWidth="2"
                 />
                 <path
                     d="M648.5 344L727.5 266.5"
                     stroke="#211715"
-                    stroke-width="2"
+                    strokeWidth="2"
                 />
-                <path
-                    d="M709 380L778.5 307"
-                    stroke="#211715"
-                    stroke-width="2"
-                />
+                <path d="M709 380L778.5 307" stroke="#211715" strokeWidth="2" />
                 <path
                     d="M424 126L472.5 285L764.5 509.5L792.5 408C797.333 384.5 798.1 301.6 702.5 264L424 126Z"
                     fill="#D9BEA2"
@@ -164,13 +160,13 @@ const BooksNight = (): ReactElement => {
                 <path
                     d="M764.5 509.5L792.5 408C797.333 384.5 798.1 301.6 702.5 264L424 126L472.5 285L764.5 509.5ZM764.5 509.5L778.5 446"
                     stroke="#D9BEA2"
-                    stroke-width="2"
+                    strokeWidth="2"
                 />
                 <path
                     d="M453 157L495 284C497.333 286 552.2 324 753 460C779 388 779.833 342.167 769 328L749 307L453 157Z"
                     stroke="black"
                     stroke-opacity="0.47"
-                    stroke-width="3"
+                    strokeWidth="3"
                 />
                 <path
                     d="M715.5 268.5C766.42 304.603 742.204 343.777 736.699 363.455C753.061 356.299 787.931 357.99 790.5 422C812 338 767.338 295.333 715.5 268.5Z"

@@ -1,78 +1,124 @@
 import React, { ReactElement } from 'react'
-import { AiFillStar, AiFillDelete } from 'react-icons/ai'
-import { Button } from '@material-tailwind/react'
+import Pagination from '../Common/Pagination'
+import FilterContainer from '../../containers/Common/Filter'
+import BookContainer from '../../containers/Common/Book'
+import SkeletonLoader from '../Common/SkeletonLoader'
+import NoData from '../../UI/NoDataSvg'
+import PlayerContainer from '../../containers/Player'
 
-const array = [
-    {
-        id: 1,
-        img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbAbvzL1CEqf18PYXnv5KNVMZap5hYHgQKxD3nEI5VnBLPNMw0m5Xs4IUjpH_Qfm91DmQ&usqp=CAU',
-    },
-    {
-        id: 2,
-        img: 'https://m.media-amazon.com/images/I/51FTcHNhQqL.jpg',
-    },
-    {
-        id: 3,
-        img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbAbvzL1CEqf18PYXnv5KNVMZap5hYHgQKxD3nEI5VnBLPNMw0m5Xs4IUjpH_Qfm91DmQ&usqp=CAU',
-    },
-    {
-        id: 4,
-        img: 'https://m.media-amazon.com/images/I/51FTcHNhQqL.jpg',
-    },
-    {
-        id: 5,
-        img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbAbvzL1CEqf18PYXnv5KNVMZap5hYHgQKxD3nEI5VnBLPNMw0m5Xs4IUjpH_Qfm91DmQ&usqp=CAU',
-    },
-]
+type FavouriteProps = {
+    second: number
+    isFetching: boolean
+    books: any
+    totalPages: number
+    favouritePage: number
+    isPlayer: boolean
+    bookId: string
+    bookUid: string
+    bookName: string
+    bookAuthor: string[]
+    searchValue: string | undefined
+    setSearchValue: (data: string) => void
+    setSortValue: (data: string) => void
+    handleOpenPlayer: (
+        id: string,
+        id_text: string,
+        book: string,
+        authors: string[]
+    ) => void
+    setPlayer: (data: boolean) => void
+    handleChangePage: (page: number, flag: string) => void
+    handleAdd: (id: string) => void
+}
 
-const Favourite = (): ReactElement => {
+const Favourite = ({
+    second,
+    isFetching,
+    books,
+    totalPages,
+    isPlayer,
+    bookId,
+    bookUid,
+    bookName,
+    bookAuthor,
+    favouritePage,
+    searchValue,
+    setSearchValue,
+    setSortValue,
+    handleOpenPlayer,
+    setPlayer,
+    handleAdd,
+    handleChangePage,
+}: FavouriteProps): ReactElement => {
     return (
-        <div
-            className="scrollbar scrollbar-thumb-nightbg/80 scrollbar-thumb-rounded-xl scrollbar-w-2
-            hover:scrollbar-thumb-blue-gray-900/80 scrollbar-track-nightbg/50 bg-night w-full min-h-full p-10 items-center max-h-screen
-        overflow-y-scroll scrollbar-h-5"
-        >
-            <div className="grid 2xl:grid-cols-4 xl:grid-cols-3 2xl:gap-16 xl:gap-8">
-                {array.map((item: any) => (
-                    <div
-                        className="border-nightbg border-2 h-full 2xl:rounded-[36px]
-                    xl:rounded-3xl grid grid-cols-2 justify-center items-center cursor-pointer
-                    hover:bg-nightbg hover:shadow-md hover:shadow-blue-gray-800 hover:scale-[98%] duration-400 ease-linear transition-all"
-                    >
-                        <div className="flex h-full justify-center items-center overflow-hidden">
-                            <img
-                                id={item.id}
-                                src={item.img}
-                                alt=""
-                                className="w-full h-[100%] flex 2xl:rounded-3xl xl:rounded-2xl shadow-md shadow-blue-gray-800 opacity-70"
-                            />
-                        </div>
-                        <div className="flex flex-col justify-between 2xl:py-[15%] xl:py-[5%] 2xl:h-full xl:h-[90%] 2xl:px-8 xl:px-4">
-                            <div className="flex flex-col h-full justify-between">
-                                <h1 className="text-start 2xl:text-6xl xl:text-5xl text-white font-bold font-['Monaco']">
-                                    BOOK NAME
-                                </h1>
-                                <h2 className="text-start 2xl:text-4xl xl:text-4xl text-white font-sans">
-                                    by Book Author
-                                </h2>
-                                <div className="flex items-center 2xl:text-4xl xl:text-2xl gap-2">
-                                    <AiFillStar color="yellow" />
-                                    <h3 className="text-start text-white font-sans">
-                                        9.4
-                                    </h3>
-                                </div>
-                                <Button
-                                    className="rounded-xl w-full normal-case 2xl:text-lg xl:text-sm text-blue-gray-900 flex justify-center items-center gap-3"
-                                    variant="filled"
-                                    color="red"
-                                >
-                                    Remove
-                                </Button>
-                            </div>
-                        </div>
+        <div className="flex flex-col bg-night w-full">
+            <FilterContainer
+                isFavourites={true}
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+                setSortValue={setSortValue}
+            />
+            {(books?.length === 0 || books === undefined) && !isFetching ? (
+                <div className="flex w-full h-full justify-center items-center">
+                    <div className="flex justify-center items-center w-1/2 h-1/2">
+                        <NoData />
                     </div>
-                ))}
-            </div>
+                </div>
+            ) : (
+                <div
+                    className="scrollbar scrollbar-thumb-nightbg/80 scrollbar-thumb-rounded-xl scrollbar-w-3
+             hover:scrollbar-thumb-blue-gray-900/80 scrollbar-track-nightbg/50 w-full p-10 items-center max-h-screen
+         overflow-y-scroll scrollbar-h-5 pb-24"
+                >
+                    {isFetching ? (
+                        <SkeletonLoader isFavourites />
+                    ) : (
+                        <div className="grid 2xl:grid-cols-4 xl:grid-cols-3 2xl:gap-20 xl:gap-8">
+                            {books?.map((item: any, index: number) => (
+                                <BookContainer
+                                    isFavourite={item?.is_favorites}
+                                    key={item?.id}
+                                    id={item?.id}
+                                    page={item?.current_page}
+                                    second={item?.current_second}
+                                    idText={item?.id_text}
+                                    name={item?.name}
+                                    author={item?.authors}
+                                    img={
+                                        index === 0
+                                            ? 'https://m.media-amazon.com/images/I/51PA0AEBFxL.jpg'
+                                            : 'https://m.media-amazon.com/images/I/41qLJYLNccL._AC_UF350,350_QL50_.jpg'
+                                    }
+                                    rating={item?.rating_avg}
+                                    onClick={handleAdd}
+                                    handleOpenPlayer={handleOpenPlayer}
+                                />
+                            ))}
+                        </div>
+                    )}
+                    {totalPages > 1 && (
+                        <Pagination
+                            page={favouritePage}
+                            total={totalPages}
+                            incrementPage={(): void =>
+                                handleChangePage(favouritePage, 'increment')
+                            }
+                            decrementPage={(): void =>
+                                handleChangePage(favouritePage, 'decrement')
+                            }
+                        />
+                    )}
+                </div>
+            )}
+            <PlayerContainer
+                isPlayer={isPlayer}
+                second={second}
+                bookId={bookId}
+                bookUid={bookUid}
+                bookName={bookName}
+                bookAuthor={bookAuthor}
+                setPlayer={setPlayer}
+            />
         </div>
     )
 }

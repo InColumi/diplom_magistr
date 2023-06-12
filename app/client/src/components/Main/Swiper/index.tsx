@@ -1,9 +1,8 @@
-import { ReactElement } from 'react'
+import { FC } from 'react'
 import { Autoplay } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Button } from '@material-tailwind/react'
 import { AiFillStar } from 'react-icons/ai'
-import Book from '../../Common/Book'
 
 import 'swiper/css'
 import 'swiper/css/pagination'
@@ -11,111 +10,120 @@ import 'swiper/css/navigation'
 
 import SwiperButtonNext from './swiperButtonNext'
 
-const array = [
-    {
-        id: 1,
-        img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbAbvzL1CEqf18PYXnv5KNVMZap5hYHgQKxD3nEI5VnBLPNMw0m5Xs4IUjpH_Qfm91DmQ&usqp=CAU',
-    },
-    {
-        id: 2,
-        img: 'https://m.media-amazon.com/images/I/51FTcHNhQqL.jpg',
-    },
-    {
-        id: 3,
-        img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbAbvzL1CEqf18PYXnv5KNVMZap5hYHgQKxD3nEI5VnBLPNMw0m5Xs4IUjpH_Qfm91DmQ&usqp=CAU',
-    },
-    {
-        id: 4,
-        img: 'https://m.media-amazon.com/images/I/51FTcHNhQqL.jpg',
-    },
-    {
-        id: 5,
-        img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbAbvzL1CEqf18PYXnv5KNVMZap5hYHgQKxD3nEI5VnBLPNMw0m5Xs4IUjpH_Qfm91DmQ&usqp=CAU',
-    },
-    {
-        id: 6,
-        img: 'https://m.media-amazon.com/images/I/51FTcHNhQqL.jpg',
-    },
-    {
-        id: 7,
-        img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbAbvzL1CEqf18PYXnv5KNVMZap5hYHgQKxD3nEI5VnBLPNMw0m5Xs4IUjpH_Qfm91DmQ&usqp=CAU',
-    },
-    {
-        id: 8,
-        img: 'https://m.media-amazon.com/images/I/51FTcHNhQqL.jpg',
-    },
-    {
-        id: 9,
-        img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbAbvzL1CEqf18PYXnv5KNVMZap5hYHgQKxD3nEI5VnBLPNMw0m5Xs4IUjpH_Qfm91DmQ&usqp=CAU',
-    },
-    {
-        id: 10,
-        img: 'https://m.media-amazon.com/images/I/51FTcHNhQqL.jpg',
-    },
-]
+type SwiperBlockProps = {
+    recomendations: any
+    handleAdd: (data: any) => void
+}
 
-const SwiperBlock = (): ReactElement => {
+const SwiperBlock: FC<SwiperBlockProps> = ({ recomendations, handleAdd }) => {
+    const getFlag = (name: string): string => {
+        if (name?.length <= 5) {
+            return '2xl:text-8xl xl:text-7xl line-clamp-1'
+        } else if (name?.length <= 15) {
+            return '2xl:text-7xl xl:text-5xl line-clamp-2'
+        } else {
+            return '2xl:text-6xl xl:text-3xl line-clamp-2'
+        }
+    }
+
     return (
         <Swiper
             modules={[Autoplay]}
             spaceBetween={'4%'}
             slidesPerView="auto"
-            grabCursor={true}
             loop={true}
+            grabCursor={true}
             autoplay={{
                 delay: 5000,
-                disableOnInteraction: true,
+                // disableOnInteraction: false,
             }}
             className="h-full w-full"
         >
             <div className="flex w-full items-center justify-between absolute top-1 z-10">
-                <h2 className="2xl:text-4xl xl:text-xl text-gray-400 font-semibold">
-                    Recomended For You
+                <h2 className="2xl:text-4xl xl:text-xl text-gray-400 font-semibold uppercase">
+                    Recomended for you
                 </h2>
                 <SwiperButtonNext />
             </div>
-            {array.map((item: any) => (
+            {recomendations?.map((item: any, index: number) => (
                 <SwiperSlide
                     key={item.id}
                     className="h-full max-w-[48%] flex flex-col 2xl:pt-16 xl:pt-14"
                 >
                     <div
                         className="border-nightbg border-2 h-full 2xl:rounded-[36px]
-                    xl:rounded-3xl grid grid-cols-2 justify-center items-center cursor-pointer
-                    hover:bg-nightbg hover:shadow-md hover:shadow-blue-gray-800 hover:scale-[98%] duration-400 ease-linear transition-all"
+                    xl:rounded-3xl grid grid-cols-2 xl:gap-5 justify-center items-center"
                     >
-                        <div className="flex h-full justify-center items-center overflow-hidden">
+                        <div className="flex h-full justify-center items-center overflow-hidden p-2">
                             <img
+                                // loading="lazy"
                                 id={item.id}
-                                src={item.img}
+                                src={
+                                    index === 0
+                                        ? 'https://m.media-amazon.com/images/I/51PA0AEBFxL.jpg'
+                                        : 'https://m.media-amazon.com/images/I/41qLJYLNccL._AC_UF350,350_QL50_.jpg'
+                                }
                                 alt=""
-                                className="w-full h-[100%] flex 2xl:rounded-[36px] xl:rounded-3xl shadow-md opacity-70 xl:pr-2"
+                                className="w-full h-[100%] flex 2xl:rounded-[36px] xl:rounded-3xl shadow-md opacity-70"
                             />
                         </div>
                         <div className="flex flex-col justify-between 2xl:py-[15%] xl:py-[5%] 2xl:h-full xl:h-[90%] 2xl:px-8 xl:px-6">
-                            <div className="flex flex-col h-full justify-between">
-                                <h1 className="text-start 2xl:text-8xl xl:text-5xl text-white font-bold font-['Monaco']">
-                                    BOOK NAME
-                                </h1>
-                                <h2 className="text-start 2xl:text-5xl xl:text-3xl text-white font-sans">
-                                    by Book Author
-                                </h2>
-                                <div className="flex items-center 2xl:text-4xl xl:text-lg gap-2">
-                                    <AiFillStar color="yellow" />
-                                    <AiFillStar color="yellow" />
-                                    <AiFillStar color="yellow" />
-                                    <AiFillStar color="yellow" />
-                                    <AiFillStar color="yellow" />
-                                    <AiFillStar color="gray" />
-                                </div>
-                                <Button
-                                    className="rounded-2xl w-2/3 normal-case 2xl:h-16 xl:h-12 2xl:text-2xl xl:text-md text-blue-gray-900"
-                                    variant="filled"
-                                    color="yellow"
+                            <div className="flex flex-col h-2/3 gap-2">
+                                <h1
+                                    className={`${getFlag(item.name)} text-start
+                            text-white font-bold font-['Monaco'] max-h-1/2`}
                                 >
-                                    Add to Favourite
-                                </Button>
+                                    {item.name}
+                                </h1>
+                                <h2
+                                    className={`text-start ${
+                                        item.authors[0].length < 12
+                                            ? '2xl:text-6xl xl:text-4xl'
+                                            : '2xl:text-4xl xl:text-3xl'
+                                    } text-white/50 font-sans line-clamp-2`}
+                                >
+                                    {index === 1
+                                        ? 'Elbert Hubbard'
+                                        : item.authors[0]}
+                                </h2>
                             </div>
+                            <div className="flex items-center 2xl:text-6xl xl:text-3xl justify-between mb-2">
+                                <AiFillStar
+                                    color={
+                                        item.rating_avg >= 1 ? 'yellow' : 'gray'
+                                    }
+                                />
+                                <AiFillStar
+                                    color={
+                                        item.rating_avg >= 2 ? 'yellow' : 'gray'
+                                    }
+                                />
+                                <AiFillStar
+                                    color={
+                                        item.rating_avg >= 3 ? 'yellow' : 'gray'
+                                    }
+                                />
+                                <AiFillStar
+                                    color={
+                                        item.rating_avg >= 4 ? 'yellow' : 'gray'
+                                    }
+                                />
+                                <AiFillStar
+                                    color={
+                                        item.rating_avg === 5
+                                            ? 'yellow'
+                                            : 'gray'
+                                    }
+                                />
+                            </div>
+                            <Button
+                                className="shadow-none hover:shadow-none hover:scale-[98%] rounded-xl w-full normal-case 2xl:h-16 xl:h-12 2xl:text-2xl xl:text-md text-blue-gray-900  mt-3"
+                                variant="filled"
+                                color="yellow"
+                                onClick={(): void => handleAdd(item.id)}
+                            >
+                                Add to Favourite
+                            </Button>
                         </div>
                     </div>
                 </SwiperSlide>
